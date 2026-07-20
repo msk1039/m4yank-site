@@ -1,0 +1,55 @@
+---
+import { patterns, type PatternName } from "../lib/patterns";
+
+interface Props {
+  name: PatternName;
+  class?: string;
+  patternClass?: string;
+  repeat?: string;
+  size?: string;
+  position?: string;
+}
+
+const {
+  name,
+  class: className = "",
+  patternClass = "",
+  repeat = "repeat",
+  size = "auto",
+  position = "0 0",
+} = Astro.props;
+
+const { light, dark } = patterns[name];
+---
+
+<div class:list={["relative isolate", className]}>
+  <div
+    aria-hidden="true"
+    class:list={[
+      "pointer-events-none absolute inset-0 -z-10 dark:hidden",
+      patternClass,
+    ]}
+    style={{
+      backgroundImage: light,
+      backgroundRepeat: repeat,
+      backgroundSize: size,
+      backgroundPosition: position,
+    }}
+  >
+  </div>
+  <div
+    aria-hidden="true"
+    class:list={[
+      "pointer-events-none absolute inset-0 -z-10 hidden dark:block",
+      patternClass,
+    ]}
+    style={{
+      backgroundImage: dark,
+      backgroundRepeat: repeat,
+      backgroundSize: size,
+      backgroundPosition: position,
+    }}
+  >
+  </div>
+  <slot />
+</div>

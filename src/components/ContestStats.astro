@@ -1,0 +1,319 @@
+---
+import { Icon } from "astro-icon/components";
+import PatternBackground from "./PatternBackground.astro";
+import {
+  CODE_FORCES_HANDLE,
+  CODE_FORCES_PROFILE_URL,
+  LEET_CODE_HANDLE,
+  LEET_CODE_PROFILE_URL,
+  CODE_CHEF_PROFILE_URL,
+  CODE_CHEF_RATING,
+  fallbackStats,
+  formatContestRating,
+  CODE_CHEF_HANDLE,
+} from "../lib/contest";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const patternClass =
+  "opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100";
+
+const cardClass =
+  "bg-background outline outline-1 -outline-offset-1 outline-dotted outline-transparent transition-colors duration-200 ease-in-out group-hover:outline-border";
+
+const contentClass =
+  "transition-transform duration-200 ease-in-out group-hover:translate-x-2 group-hover:-translate-y-3";
+---
+
+<div class:list={["grid gap-6", className]} data-contest-stats>
+  <!-- Desktop -->
+
+  <div class="hidden pt-10 sm:block">
+    <div class="grid gap-4 sm:grid-cols-4">
+      <PatternBackground
+        name="dots"
+        size="48px"
+        class="group pb-2"
+        patternClass={patternClass}
+      >
+        <div class:list={[cardClass, "mb-2 ml-2 grid h-full gap-4 pr-4"]}>
+          <div class:list={[contentClass, "grid gap-4"]}>
+            <p class="text-foreground font-medium">Total Problems solved</p>
+            <p
+              class="text-foreground text-2xl font-semibold tracking-tight tabular-nums"
+            >
+              400+
+            </p>
+          </div>
+        </div>
+      </PatternBackground>
+
+      <PatternBackground
+        name="dots"
+        size="48px"
+        class="group pb-2"
+        patternClass={patternClass}
+      >
+        <a
+          href={CODE_FORCES_PROFILE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-platform="Codeforces"
+          data-no-dialog
+          class:list={[cardClass, "mb-2 ml-2 grid h-full gap-4 no-underline"]}
+        >
+          <div class:list={[contentClass, "grid gap-4"]}>
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-foreground font-medium">Codeforces</span>
+              <Icon
+                name="ri:arrow-right-up-line"
+                class="text-muted-foreground group-hover:text-foreground size-4 transition-colors"
+              />
+            </div>
+
+            <div class="grid gap-1">
+              <p class="text-muted-foreground text-xs">Max rating</p>
+              <p
+                data-contest-rating
+                class="text-foreground text-2xl font-semibold tracking-tight tabular-nums"
+              >
+                <span
+                  class="bg-muted inline-block h-7 w-14 animate-pulse rounded"
+                ></span>
+              </p>
+            </div>
+
+            <p class="text-muted-foreground font-mono text-xs">
+              @{CODE_FORCES_HANDLE}
+            </p>
+          </div>
+        </a>
+      </PatternBackground>
+
+      <PatternBackground
+        name="dots"
+        size="48px"
+        class="group pb-2"
+        patternClass={patternClass}
+      >
+        <a
+          href={LEET_CODE_PROFILE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-platform="LeetCode"
+          data-no-dialog
+          class:list={[cardClass, "mb-2 ml-2 grid h-full gap-4 no-underline"]}
+        >
+          <div class:list={[contentClass, "grid gap-4"]}>
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-foreground font-medium">LeetCode</span>
+              <Icon
+                name="ri:arrow-right-up-line"
+                class="text-muted-foreground group-hover:text-foreground size-4 transition-colors"
+              />
+            </div>
+
+            <div class="grid gap-1">
+              <p class="text-muted-foreground text-xs">Max rating</p>
+              <p
+                data-contest-rating
+                class="text-foreground text-2xl font-semibold tracking-tight tabular-nums"
+              >
+                <span
+                  class="bg-muted inline-block h-7 w-14 animate-pulse rounded"
+                ></span>
+              </p>
+            </div>
+
+            <p class="text-muted-foreground font-mono text-xs">
+              @{LEET_CODE_HANDLE}
+            </p>
+          </div>
+        </a>
+      </PatternBackground>
+
+      <PatternBackground
+        name="dots"
+        size="48px"
+        class="group pb-2"
+        patternClass={patternClass}
+      >
+        <a
+          href={CODE_CHEF_PROFILE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-platform="Codechef"
+          data-no-dialog
+          class:list={[cardClass, "mb-2 ml-2 grid h-full gap-4 no-underline"]}
+        >
+          <div class:list={[contentClass, "grid gap-4"]}>
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-foreground font-medium">CodeChef</span>
+              <Icon
+                name="ri:arrow-right-up-line"
+                class="text-muted-foreground group-hover:text-foreground size-4 transition-colors"
+              />
+            </div>
+
+            <div class="grid gap-1">
+              <p class="text-muted-foreground text-xs">Max rating</p>
+              <p
+                data-contest-rating
+                class="text-foreground text-2xl font-semibold tracking-tight tabular-nums"
+              >
+                <!-- <span
+                  class="bg-muted inline-block h-7 w-14 animate-pulse rounded"
+                ></span> -->
+                {formatContestRating(CODE_CHEF_RATING)}
+              </p>
+            </div>
+
+            <p class="text-muted-foreground font-mono text-xs">
+              @{CODE_CHEF_HANDLE}
+            </p>
+          </div>
+        </a>
+      </PatternBackground>
+    </div>
+  </div>
+
+  <!-- Mobile -->
+  <div class="sm:hidden">
+    <div class="grid grid-cols-2 gap-2">
+      <div class="border-border/40 relative rounded border p-3">
+        <p class="text-muted-foreground text-xs">Questions solved</p>
+        <p class="text-foreground font-semibold tabular-nums">400+</p>
+      </div>
+
+      <a
+        href={CODE_FORCES_PROFILE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-platform="Codeforces"
+        data-no-dialog
+        class="border-border/40 relative rounded border p-3 no-underline"
+      >
+        <Icon
+          name="ri:arrow-right-up-line"
+          class="text-muted-foreground absolute top-2 right-2 size-3"
+        />
+        <p class="text-muted-foreground text-xs">Codeforces</p>
+        <p
+          data-contest-rating
+          class="text-foreground font-semibold tabular-nums"
+        >
+          {formatContestRating(fallbackStats.codeforces.maxRating)}
+        </p>
+      </a>
+
+      <a
+        href={LEET_CODE_PROFILE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-platform="LeetCode"
+        data-no-dialog
+        class="border-border/40 relative rounded border p-3 no-underline"
+      >
+        <Icon
+          name="ri:arrow-right-up-line"
+          class="text-muted-foreground absolute top-2 right-2 size-3"
+        />
+        <p class="text-muted-foreground text-xs">LeetCode</p>
+        <p
+          data-contest-rating
+          class="text-foreground font-semibold tabular-nums"
+        >
+          {formatContestRating(fallbackStats.leetcode.maxRating)}
+        </p>
+      </a>
+
+      <a
+        href={CODE_CHEF_PROFILE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-platform="CodeChef"
+        data-no-dialog
+        class="border-border/40 relative rounded border p-3 no-underline"
+      >
+        <Icon
+          name="ri:arrow-right-up-line"
+          class="text-muted-foreground absolute top-2 right-2 size-3"
+        />
+        <p class="text-muted-foreground text-xs">CodeChef</p>
+        <p class="text-foreground font-semibold tabular-nums">
+          {formatContestRating(CODE_CHEF_RATING)}
+        </p>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script
+  is:inline
+  define:vars={{
+    fallbackCodeforces: fallbackStats.codeforces,
+    fallbackLeetcode: fallbackStats.leetcode,
+  }}
+>
+  (function () {
+    const fallback = {
+      codeforces: fallbackCodeforces,
+      leetcode: fallbackLeetcode,
+    };
+
+    function formatRating(rating) {
+      if (rating === null || rating === undefined) return "—";
+      return Math.round(rating).toLocaleString();
+    }
+
+    function applyStats(stats) {
+      const platforms = {
+        codeforces: stats.codeforces,
+        leetcode: stats.leetcode,
+      };
+
+      document
+        .querySelectorAll("[data-contest-stats] [data-platform]")
+        .forEach((card) => {
+          const platformKey = card.dataset.platform?.toLowerCase();
+          const data = platforms[platformKey];
+          if (!data) return;
+
+          const ratingEl = card.querySelector("[data-contest-rating]");
+          if (ratingEl) {
+            ratingEl.textContent = formatRating(data.maxRating);
+          }
+        });
+    }
+
+    fetch("/api/contest-stats.json", {
+      headers: { Accept: "application/json" },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to load contest stats");
+        return response.json();
+      })
+      .then((stats) => applyStats(stats))
+      .catch(() =>
+        applyStats({
+          codeforces: fallback.codeforces,
+          leetcode: fallback.leetcode,
+          updatedAt: new Date().toISOString(),
+        }),
+      );
+
+    document
+      .querySelectorAll("[data-contest-stats] [data-platform]")
+      .forEach((link) => {
+        link.addEventListener("click", () => {
+          window.posthog?.capture("contest_platform_clicked", {
+            platform: link.dataset.platform,
+          });
+        });
+      });
+  })();
+</script>

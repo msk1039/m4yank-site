@@ -1,0 +1,41 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <g opacity="0.15">
+    <g clip-path="url(#clip0_87_187586)">
+      <rect x="46" y="46" width="3" height="3" fill="#1C1F21"/>
+      <rect x="-2" y="46" width="3" height="3" fill="#1C1F21"/>
+      <rect x="46" y="-2" width="3" height="3" fill="#1C1F21"/>
+      <rect x="-2" y="-2" width="3" height="3" fill="#1C1F21"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_87_187586">
+        <rect width="48" height="48" fill="white"/>
+      </clipPath>
+    </defs>
+  </g>
+  <g opacity="0.15">
+    <g clip-path="url(#clip0_37_7080)">
+      <path d="M24 52H23V49H24V52ZM21 51H20V50H21V51ZM27 51H26V50H27V51ZM22 50H21V49H22V50ZM26 50H25V49H26V50ZM22 48H19V47H22V48ZM28 48H25V47H28V48ZM22 46H21V45H22V46ZM24 46H23V43H24V46ZM26 46H25V45H26V46ZM21 45H20V44H21V45ZM27 45H26V44H27V45Z" fill="#0A0A0A"/>
+      <path d="M24 4H23V1H24V4ZM21 3H20V2H21V3ZM27 3H26V2H27V3ZM22 2H21V1H22V2ZM26 2H25V1H26V2ZM22 0H19V-1H22V0ZM28 0H25V-1H28V0ZM22 -2H21V-3H22V-2ZM24 -2H23V-5H24V-2ZM26 -2H25V-3H26V-2ZM21 -3H20V-4H21V-3ZM27 -3H26V-4H27V-3Z" fill="#0A0A0A"/>
+      <path d="M48 28H47V25H48V28ZM45 27H44V26H45V27ZM51 27H50V26H51V27ZM46 26H45V25H46V26ZM50 26H49V25H50V26ZM46 24H43V23H46V24ZM52 24H49V23H52V24ZM46 22H45V21H46V22ZM48 22H47V19H48V22ZM50 22H49V21H50V22ZM45 21H44V20H45V21ZM51 21H50V20H51V21Z" fill="#0A0A0A"/>
+      <path d="M0 28H-1V25H0V28ZM-3 27H-4V26H-3V27ZM3 27H2V26H3V27ZM-2 26H-3V25H-2V26ZM2 26H1V25H2V26ZM-2 24H-5V23H-2V24ZM4 24H1V23H4V24ZM-2 22H-3V21H-2V22ZM0 22H-1V19H0V22ZM2 22H1V21H2V22ZM-3 21H-4V20H-3V21ZM3 21H2V20H3V21Z" fill="#0A0A0A"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_37_7080">
+        <rect width="48" height="48" fill="white"/>
+      </clipPath>
+    </defs>
+  </g>
+  <g opacity="0.15">
+    <g clip-path="url(#clip0_29_36955)">
+      <path d="M48.5 -1.5L-1.5 48.5" stroke="#1C1F21"/>
+      <path d="M72.5 22.5L22.5 72.5" stroke="#1C1F21"/>
+      <path d="M72.5 -1.5L22.5 48.5" stroke="#1C1F21"/>
+      <path d="M49 -26L-1 24" stroke="#1C1F21"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_29_36955">
+        <rect width="48" height="48" fill="white"/>
+      </clipPath>
+    </defs>
+  </g>
+</svg>

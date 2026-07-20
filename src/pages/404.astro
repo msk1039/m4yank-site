@@ -1,0 +1,30 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Not found" description="This page could not be found.">
+  <main class="isolate">
+    <section class="section-shell">
+      <div class="section-inner grid gap-6">
+        <p
+          class="text-muted-foreground font-mono text-sm tracking-wide uppercase"
+        >
+          404
+        </p>
+        <h1
+          class="max-w-[24ch] font-serif text-3xl font-normal tracking-tight text-balance italic md:text-5xl"
+        >
+          This page wandered off.
+        </h1>
+        <p class="text-muted-foreground max-w-[52ch] text-base text-pretty">
+          The page you're looking for doesn't exist or has moved. Let's get you
+          back on track.
+        </p>
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          <a href="/" class="font-medium">Back home</a>
+          <a href="/blog">Read the blog</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

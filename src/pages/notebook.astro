@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ImageViewer from "../components/ImageViewer.astro";
+import { notebookSections } from "../data/notebook";
+import { absoluteUrl, buildPersonRef, siteConfig } from "../lib/seo";
+
+const pageUrl = absoluteUrl("/notebook", Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Notebook · ${siteConfig.name}`,
+  description: "A scrapbook of draft work, screenshots, random work, and art.",
+  url: pageUrl,
+  author: buildPersonRef(Astro.site),
+};
+---
+
+<Layout
+  title="Notebook"
+  description="A scrapbook of draft work, screenshots, random work, and art."
+  jsonLd={jsonLd}
+>
+  <main class="isolate">
+    <section class="section-shell">
+      <div class="section-inner grid gap-16">
+        <div class="grid gap-4">
+          <p class="text-muted-foreground text-sm">Notebook</p>
+          <h1
+            class="max-w-[28ch] font-serif text-3xl font-normal tracking-tight text-balance italic md:text-5xl"
+          >
+            Drafts, screenshots, and visual notes.
+          </h1>
+          <p
+            class="text-muted-foreground max-w-[56ch] text-base text-pretty md:text-lg"
+          >
+            A loose collection of work-in-progress shots, random experiments,
+            screenshots, and art. Everything here is hosted on Cloudflare R2.
+          </p>
+        </div>
+
+        {
+          notebookSections.map((section) => (
+            <div class="grid gap-6">
+              <div class="grid gap-1">
+                <h2 class="font-serif text-xl font-extralight tracking-tight text-balance italic">
+                  {section.title}
+                </h2>
+                {section.description && (
+                  <p class="text-muted-foreground text-sm">
+                    {section.description}
+                  </p>
+                )}
+              </div>
+
+              {section.images.length > 0 ? (
+                <ul
+                  role="list"
+                  class="columns-2 gap-3 sm:columns-3 md:columns-4 md:gap-4"
+                >
+                  {section.images.map((image, index) => (
+                    <li class="mb-3 break-inside-avoid md:mb-4">
+                      <figure class="grid gap-2">
+                        <ImageViewer
+                          id={`${section.title}-${index}`}
+                          src={image.src}
+                          alt={image.alt}
+                          title={image.alt}
+                          caption={image.caption}
+                          class="block overflow-hidden border"
+                          triggerClass="w-full"
+                        >
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            loading="lazy"
+                            decoding="async"
+                            class="h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
+                          />
+                        </ImageViewer>
+                        {image.caption && (
+                          <figcaption class="text-muted-foreground text-xs">
+                            {image.caption}
+                          </figcaption>
+                        )}
+                      </figure>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="text-muted-foreground text-sm">No images yet.</p>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</Layout>

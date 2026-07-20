@@ -1,0 +1,137 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Annotate from "../components/Annotate.astro";
+import { talks, contributions } from "../data/portfolio";
+import { absoluteUrl, buildPersonRef, siteConfig } from "../lib/seo";
+
+const pageUrl = absoluteUrl("/talks", Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Talks · ${siteConfig.name}`,
+  description:
+    "Talks, writing, and open source contributions. Nothing here yet, but I share what I learn as I go.",
+  url: pageUrl,
+  author: buildPersonRef(Astro.site),
+  hasPart: talks.map((talk) => ({
+    "@type": "Event",
+    name: talk.title,
+    description: talk.description,
+    startDate: talk.date,
+    location: { "@type": "Place", name: talk.event },
+    url: talk.href,
+    performer: buildPersonRef(Astro.site),
+  })),
+};
+---
+
+<Layout
+  title="Talks"
+  description="Talks, writing, and open source contributions. Nothing here yet, but I share what I learn as I go."
+  jsonLd={jsonLd}
+>
+  <main class="isolate">
+    <section class="section-shell">
+      <div class="section-inner grid gap-12">
+        <div class="grid gap-4">
+          <p class="text-muted-foreground text-sm">Talks</p>
+          <h1
+            class="max-w-[24ch] font-serif text-3xl font-normal tracking-tight text-balance italic md:text-5xl"
+          >
+            I share what I learn because it forces me to <Annotate
+              type="underline">learn it deeper</Annotate
+            >.
+          </h1>
+          <p class="text-muted-foreground max-w-[56ch] text-pretty">
+            I haven't given public talks yet, but I write about things I run
+            into firsthand and can't stop thinking about. Sharing them publicly
+            keeps me honest, helps others experiment sooner, and sharpens my own
+            understanding in a way that building alone never could.
+          </p>
+        </div>
+
+        <div class="grid gap-8">
+          {
+            talks.map((talk, index) => (
+              <div class="grid gap-2">
+                <p class="text-muted-foreground font-mono text-sm tracking-wide uppercase">
+                  {talk.event} · {talk.date}
+                </p>
+                <h2 class="text-xl font-semibold tracking-tight">
+                  {talk.title}
+                </h2>
+                <p class="text-muted-foreground max-w-[56ch] text-base text-pretty">
+                  {talk.description}
+                </p>
+                <a
+                  href={talk.href}
+                  class="text-sm"
+                  data-talk-title={talk.title}
+                  data-talk-event={talk.event}
+                >
+                  View talk
+                </a>
+              </div>
+            ))
+          }
+        </div>
+
+        <hr class="border-border/60" />
+
+        <div class="grid gap-4">
+          <p class="text-muted-foreground text-sm">Open source</p>
+          <h2 class="max-w-[24ch] text-2xl font-semibold tracking-tight">
+            Contributions that started as problems I hit while building.
+          </h2>
+          <p class="text-muted-foreground max-w-[56ch] text-base text-pretty">
+            I keep an eye out for ways to give back to the tools I use. As I
+            ship more projects, I expect these contributions to grow from real
+            gaps I run into — not side quests.
+          </p>
+        </div>
+
+        <div class="grid gap-6">
+          {
+            contributions.map((item, index) => (
+              <div class="grid gap-2">
+                <h3 class="text-lg font-semibold tracking-tight">
+                  {item.title}
+                </h3>
+                <p class="text-muted-foreground max-w-[56ch] text-base text-pretty">
+                  {item.context}
+                </p>
+                <a
+                  href={item.href}
+                  class="text-sm"
+                  data-contribution-title={item.title}
+                >
+                  Open contribution
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script is:inline>
+  document.querySelectorAll("[data-talk-title]").forEach((link) => {
+    link.addEventListener("click", () => {
+      window.posthog?.capture("talk_clicked", {
+        talk_title: link.dataset.talkTitle,
+        talk_event: link.dataset.talkEvent,
+      });
+    });
+  });
+
+  document.querySelectorAll("[data-contribution-title]").forEach((link) => {
+    link.addEventListener("click", () => {
+      window.posthog?.capture("contribution_clicked", {
+        contribution_title: link.dataset.contributionTitle,
+      });
+    });
+  });
+</script>

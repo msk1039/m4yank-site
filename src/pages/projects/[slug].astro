@@ -1,0 +1,264 @@
+---
+import { marked } from "marked";
+import { Icon } from "astro-icon/components";
+import Layout from "../../layouts/Layout.astro";
+import CodeCopy from "../../components/CodeCopy.astro";
+import { projects, type Project } from "../../data/projects";
+import { hostname } from "../../data/portfolio";
+import { absoluteUrl, buildPersonRef } from "../../lib/seo";
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+const pageUrl = absoluteUrl(`/projects/${project.slug}`, Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: project.name,
+  description: project.description,
+  url: project.href,
+  codeRepository: project.github,
+  programmingLanguage: project.tags,
+  author: buildPersonRef(Astro.site),
+};
+
+function githubReadmeUrl(
+  githubUrl: string,
+  branch: string = "main",
+): string | null {
+  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+  if (!match) return null;
+  const [, owner, repo] = match;
+  return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/README.md`;
+}
+
+function readmeBases(
+  readmeUrl: string,
+  githubUrl?: string,
+): { imageBase: string; linkBase: string } {
+  if (readmeUrl.startsWith("http")) {
+    const base = new URL("./", readmeUrl).href;
+    const rawMatch = readmeUrl.match(
+      /raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/README\.md/i,
+    );
+    if (rawMatch && githubUrl) {
+      const [, owner, repo, branch] = rawMatch;
+      return {
+        imageBase: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/`,
+        linkBase: `https://github.com/${owner}/${repo}/blob/${branch}/`,
+      };
+    }
+    return { imageBase: base, linkBase: base };
+  }
+  return { imageBase: "/", linkBase: "/" };
+}
+
+function isRelativeUrl(url: string): boolean {
+  return (
+    !url.startsWith("http") && !url.startsWith("//") && !url.startsWith("#")
+  );
+}
+
+function resolveUrl(url: string, base: string): string {
+  if (!isRelativeUrl(url)) return url;
+  return new URL(url, base).href;
+}
+
+async function fetchMarkdown(url: string): Promise<string | null> {
+  const response = await fetch(url);
+  if (!response.ok) return null;
+  return response.text();
+}
+
+async function renderReadme(project: Project): Promise<string> {
+  if (project.readme) {
+    if (project.readme.startsWith("http")) {
+      const markdown = await fetchMarkdown(project.readme);
+      if (markdown !== null) {
+        return await parseReadme(markdown, project.readme, project.github);
+      }
+    } else {
+      try {
+        const fs = await import("node:fs");
+        const markdown = fs.readFileSync(project.readme, "utf-8");
+        return await parseReadme(markdown, project.readme, project.github);
+      } catch (error) {
+        console.warn(`Failed to load README for ${project.slug}:`, error);
+      }
+    }
+    return "";
+  }
+
+  if (!project.github) return "";
+
+  const mainUrl = githubReadmeUrl(project.github, "main");
+  if (!mainUrl) return "";
+
+  let markdown = await fetchMarkdown(mainUrl);
+  let resolvedReadmeUrl = mainUrl;
+
+  if (markdown === null) {
+    const masterUrl = githubReadmeUrl(project.github, "master");
+    if (masterUrl) {
+      markdown = await fetchMarkdown(masterUrl);
+      resolvedReadmeUrl = masterUrl;
+    }
+  }
+
+  if (markdown === null) {
+    console.warn(`Failed to fetch README for ${project.slug}`);
+    return "";
+  }
+
+  return await parseReadme(markdown, resolvedReadmeUrl, project.github);
+}
+
+async function parseReadme(
+  markdown: string,
+  readmeUrl: string,
+  githubUrl?: string,
+): Promise<string> {
+  if (!markdown.trim()) return "";
+
+  const { imageBase, linkBase } = readmeBases(readmeUrl, githubUrl);
+
+  const renderer = new marked.Renderer();
+  renderer.link = ({ href, title, text }) => {
+    const url = resolveUrl(href, linkBase);
+    return `<a href="${url}" title="${title || ""}">${text}</a>`;
+  };
+  renderer.image = ({ href, title, text }) => {
+    const src = resolveUrl(href, imageBase);
+    return `<img src="${src}" alt="${text}" title="${title || ""}" loading="lazy" decoding="async" />`;
+  };
+
+  return await marked.parse(markdown, {
+    gfm: true,
+    renderer,
+  });
+}
+
+const readmeHtml = await renderReadme(project);
+---
+
+<Layout
+  title={project.name}
+  description={project.description}
+  canonical={pageUrl}
+  image={project.headerImage}
+  jsonLd={jsonLd}
+>
+  <main class="isolate">
+    <section class="section-shell">
+      <div class="section-inner grid min-w-0 gap-12">
+        <article class="grid min-w-0 gap-10">
+          <div class="grid gap-6 lg:grid-cols-2 lg:gap-10">
+            <div class="border-border/60 overflow-hidden rounded-2xl border">
+              <img
+                src={project.headerImage}
+                alt={`${project.name} preview`}
+                loading="eager"
+                decoding="async"
+                class="aspect-[4/3] h-auto w-full object-cover"
+              />
+            </div>
+
+            <header class="flex flex-col gap-5">
+              <div class="grid gap-2">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="text-muted-foreground font-mono text-xs tracking-widest uppercase"
+                  >
+                    {project.status}
+                  </span>
+                  <span class="text-muted-foreground">·</span>
+                  <span
+                    class="text-muted-foreground font-mono text-xs tracking-widest uppercase"
+                  >
+                    {project.tags[0]}
+                  </span>
+                </div>
+                <h1
+                  class="font-serif text-xl font-normal tracking-tight italic md:text-5xl"
+                >
+                  {project.name}
+                </h1>
+              </div>
+
+              <p
+                class="text-muted-foreground max-w-[56ch] text-base text-pretty md:text-lg"
+              >
+                {project.description}
+              </p>
+
+              <div class="flex flex-wrap gap-2">
+                {
+                  project.tags.map((tag) => (
+                    <span class="bg-muted text-muted-foreground rounded px-2.5 py-1 font-mono text-xs tracking-wider uppercase">
+                      {tag}
+                    </span>
+                  ))
+                }
+              </div>
+
+              <div class="flex flex-wrap items-center gap-4 pt-2">
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="group inline-flex items-center gap-1.5 font-mono text-sm no-underline"
+                >
+                  {hostname(project.href)}
+                  <Icon
+                    name="ri:arrow-right-up-line"
+                    class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+                {
+                  project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="group inline-flex items-center gap-1.5 font-mono text-sm no-underline"
+                    >
+                      <Icon name="ri:github-line" class="size-4" />
+                      {hostname(project.github)}
+                      <Icon
+                        name="ri:arrow-right-up-line"
+                        class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </a>
+                  )
+                }
+              </div>
+            </header>
+          </div>
+
+          {
+            readmeHtml && (
+              <div class="border-border/60 border-t pt-10">
+                <div
+                  class="prose max-w-none overflow-x-hidden"
+                  set:html={readmeHtml}
+                />
+                <CodeCopy />
+              </div>
+            )
+          }
+        </article>
+      </div>
+    </section>
+  </main>
+</Layout>

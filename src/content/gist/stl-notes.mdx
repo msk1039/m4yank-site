@@ -1,0 +1,633 @@
+---
+title: "C++ STL cheat sheet"
+description: "A gist of important syntax and methods of c++ STL with brief explanation , made for revision purpose."
+datePublished: 2024-12-25T15:37:56.000Z
+date: 2024-12-25T15:37:56.000Z
+slug: stl-notes
+tags: stl, cpp, gist
+gistId: fd512ad3572c4f6f71802517ccf5a4de
+gistUrl: https://gist.github.com/msk1039/fd512ad3572c4f6f71802517ccf5a4de
+isPublic: true
+---
+
+
+
+```cpp
+// #include<iostream>
+#include <bits/stdc++.h> //imports all the header files at once , no need to manually import other header files after this
+#include <iostream>
+#include <vector>
+// #include<utility>
+using namespace std;
+
+void explainVector()
+{
+    vector<pair<int, int>> v; //create a vector of pairs
+    pair<int, int> p; //a pair
+  
+    p.first = 10; 
+    p.second = 20;
+  
+    v.push_back(p);
+    v.push_back({10, 20}); //appending pair(10,20) into vector v in the end
+    v.push_back({30, 40});
+    v.push_back({50, 60});
+  
+    for(int i=0; i<v.size(); i++){
+        cout<<v[i].first<<" "<<v[i].second<<endl;
+    }
+  
+    vector<int> v;
+    v.push_back(1);
+    v.emplace_back(2); // emplace_back is faster than push_back
+    
+
+    vector<pair<int, int>> vec;
+    vec.push_back({1, 2});
+    vec.emplace_back(1, 2);
+    
+
+    vector<int> v1(5, 100);
+    // {100, 100, 100, 100, 100}
+    
+
+    vector<int> v2(5);
+    // {0, 0, 0, 0, 0} or 5 instances of any garbage value(depends on compiler)
+    // you can increase the size of vector even after initialization by using push_back or emplace_back or resize
+    
+
+    vector<int> v3{v1};
+    // v3 = {100, 100, 100, 100, 100}
+    // copies the elements of v1 to v3
+    
+
+    vector<int>::iterator it = v.begin();
+    // it points to the first element of the vector
+    // it can be used to access the elements of the vector
+    // it++ moves the iterator to the next element
+    // it-- moves the iterator to the previous element
+    // it = it + 3 moves the iterator to the 3rd element
+    // it = it - 3 moves the iterator to the 3rd element from the end
+    // it = it1 + 3 moves the iterator to the 3rd element from the position of it1
+    
+
+    vector<int>::iterator it = v.end();
+    // it points to the memory location right after the last element of the vector
+    // it-- points to the last element of the vector
+    // it can't be dereferenced
+    // it can be used to access the last element of the vector
+    // it-- moves the iterator to the previous element
+    // it++ moves the iterator to the next element
+    // it = it - 3 moves the iterator to the 3rd element from the end
+    // it = it + 3 moves the iterator to the 3rd element from the beginning
+    // it = it1 - 3 moves the iterator to the 3rd element before the position of it1
+    
+
+    vector<int>::reverse_iterator it = v.rbegin();
+    // it points to the last element of the vector
+    // it can be used to access the elements of the vector
+    // it++ moves the iterator to the previous element
+    // it-- moves the iterator to the next element
+    // it = it + 3 moves the iterator to the 3rd element
+    
+
+    vector<int>::reverse_iterator it = v.rbegin();
+    // it points to the element before the first element of the vector
+    // it can't be dereferenced
+    // it can be used to access the first element of the vector
+    // it-- moves the iterator to the next element
+    // it++ moves the iterator to the previous element
+    // it = it + 3 moves the iterator to the 3rd element from the beginning
+    // it = it - 3 moves the iterator to the 3rd element from the end
+    // it = it1 + 3 moves the iterator to the 3rd element after the position of it1
+    
+
+    for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    
+
+    for (auto it = v.begin(); it != v.end(); it++)
+    {
+        cout << *it << " ";
+        // *it gives the value at the memory location pointed by it
+        // here auto refers to vector<int>::iterator
+        // if you want to change the value at the memory location pointed by it, you can do so by using *it = value
+    }
+    
+
+    for (auto it : v)
+    {
+        cout << it << " ";
+        // it gives the value at the memory location pointed by it
+        // if you want to change the value at the memory location pointed by it, you can do so by using it = value
+        // here auto refers to int
+    }
+    
+
+    // erase function
+
+    v.erase(v.begin() + 1);
+    // removes the 2nd element of the vector
+    // v = {1, 3, 4, 5} after erasing = {1, 4, 5}
+    // after erasing the element, the size of the vector decreases by 1
+    v.erase(v.begin() + 1, v.begin() + 3);
+    // removes the elements from the 2nd element to the 4th element of the vector
+    // v = {1, 3, 4, 5} after erasing = {1, 5}
+
+    // insert function
+
+    
+    vector<int> v(2, 100); // v = {100, 100}
+
+    
+    v.insert(v.begin(), 2);    // v = {2, 100, 100}
+    v.insert(v.begin(), 2, 3); // v = {3, 3, 2, 100, 100}
+
+    
+    vector<int> copy(2, 50);                       // copy = {50, 50}
+    v.insert(v.begin(), copy.begin(), copy.end()); // v = {50, 50, 3, 3, 2, 100, 100}
+
+    
+    // v={1, 2, 3, 4, 5}
+    cout << v.size() << endl; // 5
+
+    
+    // v={1, 2, 3, 4, 5}
+    v.pop_back(); // {1, 2, 3, 4}
+
+    
+    // v1={10,20}
+    // v2={30,40}
+    v1.swap(v2); // v1={30,40} v2={10,20}
+
+    
+    v.clear(); // removes all the elements of the vector
+
+    cout << v.empty() << endl; // returns 1 if the vector is empty, 0 otherwise
+
+}
+
+void explainList()
+{
+    list<int> ls;
+
+    ls.push_back(2);    // {2}
+    ls.emplace_back(3); // {2, 3}
+
+    
+    ls.push_front(1);    // {1, 2, 3}
+    ls.emplace_front(0); // {0, 1, 2, 3}
+
+    
+    // rest of the functions are same as vector
+    //  vector is faster than list as list uses doubly linked list while vector uses single linked list
+    //  list is faster than vector in insertion and deletion
+}
+
+void explainDeque()
+{
+    deque<int> dq;
+
+    // rest everything is similar to list
+}
+
+void explainStack()
+{ // LIFO
+    stack<int> st;
+
+    st.push(1); // {1}
+    st.push(2); // {1, 2}
+    st.push(3); // {1, 2, 3}
+
+    
+    cout << st.top() << endl; // 3
+    st.pop();                 // {1, 2}
+    cout << st.top() << endl; // 2
+    st.pop();                 // {1}
+    cout << st.top() << endl; // 1
+    st.pop();                 // {}
+
+    
+    cout << st.empty() << endl; // 1
+    // returns 1 if the stack is empty, 0 otherwise
+
+    st.push(1);                // {1}
+    st.push(2);                // {1, 2}
+    st.emplace(3);             // {1, 2, 3}
+    cout << st.size() << endl; // 3
+
+    
+    stack<int> st1, st2;
+    st1.swap(st2); // st1 = {1, 2, 3} st2 = {}
+    // swaps the elements of st1 and st2
+    // st1 becomes empty and st2 becomes {1, 2, 3}
+    // st1.swap(st2) is equivalent to swap(st1, st2)
+
+    // rest of the functions are same as vector
+
+    // all operatins are O(1)
+}
+
+void explainQueue()
+{ // FIFO
+    queue<int> q;
+
+    q.push(1); // {1}
+    q.push(2); // {1, 2}
+    q.push(3); // {1, 2, 3}
+
+    
+    cout << q.front() << endl; // 1
+    q.pop();                   // {2, 3}
+    cout << q.front() << endl; // 2
+    q.back();                  // 3
+    q.pop();                   // {3}
+    cout << q.front() << endl; // 3
+
+    
+    cout << q.empty() << endl; // 1
+    // returns 1 if the queue is empty, 0 otherwise
+
+    
+    q.push(1);                // {1}
+    q.push(2);                // {1, 2}
+    q.emplace(3);             // {1, 2, 3}
+    cout << q.size() << endl; // 3
+
+    
+    queue<int> q1, q2;
+    q1.swap(q2); // q1 = {1, 2, 3} q2 = {}
+    // swaps the elements of q1 and q2
+    // q1 becomes empty and q2 becomes {1, 2, 3}
+    // q1.swap(q2) is equivalent to swap(q1, q2)
+
+    // rest of the functions are same as vector
+
+    // all operatins are O(1)
+}
+
+void explainPQ()
+{ // priority queue is a type of queue in which the elements are stored in a sorted order
+    priority_queue<int> pq;
+    // Max Heap
+
+    
+    pq.push(1); // {1}
+    pq.push(3); // {3, 1}
+    pq.push(2); // {3, 2, 1}
+
+    
+    cout << pq.top() << endl; // 3
+    pq.pop();                 // {2, 1}
+    cout << pq.top() << endl; // 2
+    pq.pop();                 // {1}
+    cout << pq.top() << endl; // 1
+    pq.pop();                 // {}
+
+    
+    cout << pq.empty() << endl; // 1
+    // returns 1 if the priority queue is empty, 0 otherwise
+
+    
+    pq.push(1);                // {1}
+    pq.push(3);                // {3, 1}
+    pq.emplace(2);             // {3, 2, 1}
+    cout << pq.size() << endl; // 3
+
+    
+    priority_queue<int> pq1, pq2;
+    pq1.swap(pq2); // pq1 = {3, 2, 1} pq2 = {}
+    // swaps the elements of pq1 and pq2
+    // pq1 becomes empty and pq2 becomes {3, 2, 1}
+    // pq1.swap(pq2) is equivalent to swap(pq1, pq2)
+
+    // rest of the functions are same as vector
+
+    // all operatins are O(logn)
+
+    
+    priority_queue<int, vector<int>, greater<int>> pq;
+    // Minimum Heap
+    pq.push(5);               // {5}
+    pq.push(1);               // {1, 5}
+    pq.push(10);              // {1, 5, 10}
+    pq.push(30);              // {1, 5, 10, 30}
+    cout << pq.top() << endl; // 1
+
+    
+    // push - logn
+    // pop - logn
+    // top - O(1)
+    // size - O(1)
+    // empty - O(1)
+    // swap - O(1)
+}
+
+void explainSet()
+{
+
+    set<int> st;
+
+    
+    st.insert(1); // {1}
+    st.insert(2); // {1, 2}
+    st.insert(2); // {1, 2}
+    st.insert(4); // {1, 2, 4}
+    st.insert(3); // {1, 2, 3, 4}
+
+    
+    cout << st.count(1) << endl; // 1
+    // returns 1 if the element is present in the set, 0 otherwise
+
+    
+    cout << st.size() << endl; // 3
+
+    
+    st.erase(2);          // {1, 3, 4}
+    st.erase(st.begin()); // {3,4}
+
+    
+    cout << st.empty() << endl; // 0
+    // returns 1 if the set is empty, 0 otherwise
+
+    set<int> st1, st2;
+    st1.swap(st2); // st1 = {3} st2 = {}
+    // swaps the elements of st1 and st2
+    // st1 becomes empty and st2 becomes {3}
+    // st1.swap(st2) is equivalent to swap(st1, st2)
+
+    
+    // rest of the functions are same as vector
+
+    // all operatins are O(logn)
+
+    auto it = st.find(3);
+    // it points to the element 3
+
+    
+    auto it = st.find(6);
+    // it points to the memory location right after the last element of the set  as 6 is not present in the set
+
+    
+    //{1, 2, 3, 4, 5}
+    auto it1 = st.find(2);
+    auto it2 = st.find(4);
+    st.erase(it1, it2); // after erace {1, 4, 5} [first, last}
+
+    
+    // lower_bound and upper_bound
+    // lower_bound returns an iterator pointing to the first element that is not less than the given value
+    // upper_bound returns an iterator pointing to the first element that is greater than the given value
+    // if the element is not present, it returns the iterator pointing to the memory location right after the last element of the set
+    // logn
+}
+
+void explainMultiSet()
+{
+    // all the functions are same as set
+    // the only difference is that set stores unique elements while multiset stores duplicate elements
+
+    multiset<int> ms;
+    ms.insert(1); // {1}
+    ms.insert(2); // {1, 2}
+    ms.insert(2); // {1, 2, 2}
+    ms.insert(4); // {1, 2, 2, 4}
+
+    
+    cout << ms.count(2) << endl; // 2
+    // returns the number of times the element is present in the multiset
+
+    
+    cout << ms.size() << endl; // 4
+
+    
+    ms.erase(2); // {1, 4}
+
+    // { 1,1,1}
+    // ms.erase(ms.find(1), ms.find(1) + 2); // {1}
+}
+
+void explainUSet()
+{
+    // unordered set<int> st;
+    // all the functions are same as set
+    //  the only difference is that set stores elements in sorted order while unordered set stores elements in any order
+    // all operations are O(1)
+    // only in worst case it is O(n)
+}
+
+void explainMap()
+{
+    // map is a collection of key-value pairs
+    // key is unique
+    // value can be duplicate
+    // keys are stored in sorted order
+    // all operations are O(logn)
+
+    map<int, int> mp;
+
+    mp[1] = 2; // {1 -> 2}
+    mp[2] = 3; // {1 -> 2, 2 -> 3}
+    mp[2] = 4; // {1 -> 2, 2 -> 4}
+    mp[4] = 5; // {1 -> 2, 2 -> 4, 4 -> 5}
+    mp[3] = 6; // {1 -> 2, 2 -> 4, 3 -> 6, 4 -> 5}
+
+    
+    cout << mp[2] << endl; // 4
+    // returns the value of the key 2
+
+    
+    cout << mp.size() << endl; // 4
+
+    
+    mp.erase(2); // {1 -> 2, 3 -> 6, 4 -> 5}
+
+    
+    cout << mp.empty() << endl; // 0
+    // returns 1 if the map is empty, 0 otherwise
+
+    
+    map<int, int> mp1, mp2;
+    mp1.swap(mp2); // mp1 = {1 -> 2, 3 -> 6, 4 -> 5} mp2 = {}
+    // swaps the elements of mp1 and mp2
+    // mp1 becomes empty and mp2 becomes {1 -> 2, 3 -> 6, 4 -> 5}
+    // mp1.swap(mp2) is equivalent to swap(mp1, mp2)
+
+    // rest of the functions are same as vector
+
+    // all operatins are O(logn)
+
+    
+    auto it = mp.find(3);
+    // it points to the pair {3, 6}
+
+    
+    auto it = mp.find(6);
+    // it points to the memory location right after the last element of the map as 6 is not present in the map
+
+    
+    //{1 -> 2, 2 -> 3, 3 -> 4, 4 -> 5, 5 -> 6}
+    auto it1 = mp.find(2);
+    auto it2 = mp.find(4);
+    mp.erase(it1, it2); // after erace {1 -> 2, 4 -> 5, 5 -> 6} [first, last}
+
+    
+    // lower_bound and upper_bound
+    // lower_bound returns an iterator pointing to the first element that is not less than the given value
+    // upper_bound returns an iterator pointing to the first element that is greater than the given value
+    // if the element is not present, it returns the iterator pointing to the memory location right after the last element of the map
+    // logn
+
+    map<int, int> mpp;
+    map<int, pair<int, int>> mpp1;
+    map<pair<int, int>, int> mpp2;
+
+    
+    mpp[1] = 2;
+    mpp.emplace({3, 1}); //  {1->2, 3->1}
+    mpp.insert({2, 3});  // {1->2, 2->3, 3->1}
+
+    
+    mpp2[{2, 3}] = 10; // {{2,3}->10}
+
+    
+    for (auto it : mpp)
+    {
+        cout << it.first << " " << it.second << endl; // 1 2 2 3 3 1
+        // it.first gives the key
+        // it.second gives the value
+    }
+
+    
+    cout << mpp[1] << endl; // 2
+    cout << mpp[5] << endl; // 0
+
+    
+    auto it = mpp.find(3);
+    cout << *(it).first << " " << *(it).second << endl; // 3 1
+
+    
+    mpp.erase(3);                        // {1->2, 2->3}
+    mpp.erase(mpp.find(2));              // {1->2}
+    mpp.erase(mpp.begin(), mpp.find(2)); // {2->3}
+
+    
+    mpp.clear(); // removes all the elements of the map
+
+    
+    cout << mpp.empty() << endl; // 1
+
+    // all operations are O(logn)
+}
+
+void explainMultiMap()
+{
+    // everything is same as map, only this is that it can store duplicate keys
+    // only mpp[key] cannot be used here
+    // all operations are O(logn)
+}
+
+void explainUnorderedMap()
+{
+    // unordered_map<int, int> mp;
+    // all the functions are same as map
+    // the only difference is that map stores elements in sorted order while unordered map stores elements in any order
+    // all operations are O(1)
+    // only in worst case it is O(n)
+}
+
+void explainExtra()
+{
+
+    sort(a, a + n); // sort in ascending order , O(nlogn) , n is the size of the array
+
+    
+    sort(v.begin(), v.end()); // sort in ascending order
+
+    
+    sort(v.begin(), v.end(), greater<int>()); // sort in descending order
+    sort(a, a + n, greater<int>());           // sort in descending order
+
+    
+    // comparator function
+
+    
+    // exampla one
+    pair<int, int> a[] = {{1, 2}, {2, 1}, {4, 1}};
+    // sort it according to second element
+    // if second element is same the sort it according to the first element but in descending
+
+    
+    sort(a, a + n, comp); //{4, 1}, {2, 1}, {1, 2}
+    // comp is a comparator function
+
+    
+    int num = 7;
+    int cnt = __builtin_popcount(num); // 3
+    // returns the number of set bits in the binary representation of the number ie 7 = 111 so 3
+
+    
+    long long num = 165786578687;
+    int cnt = __builtin_popcountll(num); // 10
+
+
+    string s = "123";
+
+    int num = stoi(s); // 123
+    // converts string to integer
+
+    string s = to_string(123); // "123"
+    // converts integer to string
+
+
+    //if i want all the premutations of string s=123
+    // 123, 132, 213, 231, 312, 321
+    // for that we can use next_permutation
+    s="123"
+    sort(s.begin(), s.end()); // always sort the string before using next_permutation
+    do{
+        cout<<s<<endl;
+    }while(next_permutation(s.begin(), s.end()));
+
+    int maxi = *max_element(v.begin(), v.end());
+    // returns the maximum element in the vector
+
+}
+
+bool comp(pair<int, int> p1, pair<int, int> p2)
+{  
+    //way 1
+    if(p1.second==p2.second){
+        return p1.first>p2.first;
+    }
+    return p1.second<p2.second;
+    
+
+    //way 2
+    return p1.second==p2.second ? p1.first>p2.first : p1.second<p2.second;
+    
+    
+    //way 3
+    if (p1.second < p2.second)
+        return true;
+    if (p1.second > p2.second)
+        return false;
+
+    if (p1.first >.p2.first)
+        return true;
+    return false;
+}
+
+
+
+int main()
+{
+    pair<int, int> p;
+    p.first = 10;
+    p.second = 20;
+    cout << p.first << " " << p.second << endl;
+}
+
+```

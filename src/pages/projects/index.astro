@@ -1,0 +1,163 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "../../layouts/Layout.astro";
+import PatternBackground from "../../components/PatternBackground.astro";
+import { hostname } from "../../data/portfolio";
+import { projects } from "../../data/projects";
+import { absoluteUrl, buildPersonRef, siteConfig } from "../../lib/seo";
+
+const pageUrl = absoluteUrl("/projects", Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Projects · ${siteConfig.name}`,
+  description:
+    "A selection of side projects and systems experiments — from terminal-based WebRTC apps to AI-powered developer tools.",
+  url: pageUrl,
+  author: buildPersonRef(Astro.site),
+  hasPart: projects.map((project) => ({
+    "@type": "SoftwareSourceCode",
+    name: project.name,
+    description: project.description,
+    url: project.href,
+    codeRepository: project.github,
+    programmingLanguage: project.tags,
+  })),
+};
+---
+
+<Layout
+  title="Projects"
+  description="A selection of side projects and systems experiments — from terminal-based WebRTC apps to AI-powered developer tools."
+  jsonLd={jsonLd}
+>
+  <main class="isolate">
+    <section class="section-shell">
+      <div class="section-inner grid gap-16">
+        <div class="grid gap-4">
+          <p class="text-muted-foreground text-sm">Selected projects</p>
+          <h1
+            class="max-w-[28ch] font-serif text-3xl font-normal tracking-tight text-balance italic md:text-5xl"
+          >
+            Things I've built while exploring systems and interfaces.
+          </h1>
+          <p
+            class="text-muted-foreground max-w-[56ch] text-base text-pretty md:text-lg"
+          >
+            A growing collection of side projects — some live, some in progress
+            — spanning networking, developer tools, and AI-assisted workflows.
+          </p>
+        </div>
+
+        <ul role="list" class="grid gap-12">
+          {
+            projects.map((project, index) => (
+              <PatternBackground
+                name="dots"
+                size="48px"
+                class="group"
+                patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+              >
+                <li class="bg-background group-hover:outline-border mb-2 ml-2 outline outline-1 -outline-offset-1 outline-transparent transition-all duration-200 ease-in-out outline-dotted first:pt-0 last:pb-0">
+                  <a
+                    href={`/projects/${project.slug}`}
+                    class="grid gap-6 no-underline transition-transform duration-300 ease-in-out group-hover:translate-x-2 group-hover:-translate-y-3 lg:grid-cols-2 lg:gap-10"
+                    data-project-name={project.name}
+                    data-project-slug={project.slug}
+                  >
+                    <div class="my-auto flex">
+                      <PatternBackground
+                        name="dots"
+                        size="48px"
+                        class=""
+                        patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+                      >
+                        <div class="bg-background group-hover:outline-border mb-2 ml-2 p-2 outline outline-1 -outline-offset-1 outline-transparent transition-all duration-200 ease-in-out outline-dotted">
+                          <img
+                            src={project.headerImage}
+                            alt={`${project.name} preview`}
+                            loading={index < 2 ? "eager" : "lazy"}
+                            decoding="async"
+                            class="aspect-[4/3] h-auto w-full object-cover"
+                          />
+                        </div>
+                      </PatternBackground>
+                    </div>
+                    <div class="flex flex-col gap-5 py-2 lg:py-6">
+                      <div class="grid gap-3">
+                        <div class="flex items-baseline justify-between gap-4">
+                          <span class="text-muted-foreground font-serif text-xl font-extralight tracking-tight italic">
+                            Nº0{index + 1}
+                          </span>
+                          <span class="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+                            {project.status}
+                          </span>
+                        </div>
+
+                        <h2 class="font-serif text-xl font-normal tracking-tight italic transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:-translate-y-1 sm:text-4xl">
+                          <span class="inline-flex items-center gap-2">
+                            {project.name}
+                            <Icon
+                              name="ri:arrow-right-up-line"
+                              class="text-muted-foreground size-6"
+                            />
+                          </span>
+                        </h2>
+                      </div>
+
+                      <p class="text-muted-foreground text-md max-w-[56ch] font-serif text-base text-pretty">
+                        {project.description}
+                      </p>
+
+                      <ul role="list" class="grid gap-2">
+                        {project.highlights.map((highlight, index) => (
+                          <PatternBackground
+                            name="dots"
+                            size="48px"
+                            class=""
+                            patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+                          >
+                            <li class="bg-background group-hover:outline-border mb-2 ml-2 border-b border-l pl-2 outline outline-1 -outline-offset-1 outline-transparent transition-all delay-75 duration-300 ease-in-out outline-dotted group-hover:translate-x-1 group-hover:-translate-y-1">
+                              <span>{highlight}</span>
+                            </li>
+                          </PatternBackground>
+                        ))}
+                      </ul>
+
+                      <div class="flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <span class="bg-muted text-muted-foreground rounded px-2.5 py-1 font-mono text-xs tracking-wider uppercase">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {project.github && (
+                        <PatternBackground
+                          name="dots"
+                          size="48px"
+                          class="p-2"
+                          patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+                        >
+                          <span class="text-muted-foreground group-hover:text-foreground mt-auto inline-flex items-center gap-1 font-mono text-xs transition-colors">
+                            <Icon name="ri:github-line" class="size-4" />
+                            {hostname(project.github)}
+                            <Icon
+                              name="ri:arrow-right-up-line"
+                              class="size-3.5"
+                            />
+                          </span>
+                        </PatternBackground>
+                      )}
+                    </div>
+                  </a>
+                </li>
+              </PatternBackground>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+</Layout>

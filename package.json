@@ -1,0 +1,52 @@
+{
+  "name": "portfolio-astro",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lighthouse": "node scripts/lighthouse.ts",
+    "subset:fonts": "node scripts/subset-fonts.ts",
+    "astro": "astro",
+    "check": "astro check",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "verify": "pnpm format:check && pnpm check && pnpm build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*": "prettier --ignore-unknown --write"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.3",
+    "@iconify-json/ri": "^1.2.10",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^6.4.7",
+    "astro-icon": "^1.1.5",
+    "astro-og-canvas": "^0.11.1",
+    "canvaskit-wasm": "^0.41.1",
+    "marked": "^18.0.6",
+    "posthog-js": "^1.395.0",
+    "sharp": "^0.35.2",
+    "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/node": "^26.1.1",
+    "chrome-launcher": "^1.2.1",
+    "husky": "^9.1.7",
+    "lighthouse": "^13.4.0",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.8.4",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "subset-font": "^2.5.0",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,239 @@
+---
+import "../styles/global.css";
+import { Font } from "astro:assets";
+import Navigation from "../components/Navigation.astro";
+import Footer from "../components/Footer.astro";
+import GlobalIframeDialog from "../components/GlobalIframeDialog.astro";
+import Analytics from "../components/Analytics.astro";
+import PostHog from "../components/posthog.astro";
+import {
+  absoluteUrl,
+  buildPersonSchema,
+  buildWebsiteSchema,
+  defaultKeywords,
+  siteConfig,
+} from "../lib/seo";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  keywords?: string[];
+  image?: string;
+  jsonLd?: unknown;
+}
+
+const {
+  title = siteConfig.name,
+  description = siteConfig.description,
+  canonical,
+  keywords,
+  image = siteConfig.defaultImage,
+  jsonLd,
+} = Astro.props;
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
+const fullTitle =
+  title === siteConfig.name ? title : `${title} · ${siteConfig.name}`;
+const ogImage = absoluteUrl(image, Astro.site);
+const ogLogo = absoluteUrl("/icons/Icon-192.png", Astro.site);
+const metaKeywords = keywords ?? defaultKeywords;
+const robots =
+  "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
+const structuredData = jsonLd
+  ? Array.isArray(jsonLd)
+    ? jsonLd
+    : [jsonLd]
+  : [buildPersonSchema(Astro.site), buildWebsiteSchema(Astro.site)];
+---
+
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem("theme");
+        const dark = stored
+          ? stored === "dark"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/Icon-192.png" />
+    <meta name="generator" content={Astro.generator} />
+    <Font cssVariable="--font-inter" />
+    <Font cssVariable="--font-google-sans-code" />
+    <Font cssVariable="--font-libre-baskerville" />
+    <script
+      type="speculationrules"
+      is:inline
+      set:html={JSON.stringify({
+        prerender: [
+          {
+            source: "document",
+            where: {
+              and: [
+                { href_matches: "/*" },
+                { not: { href_matches: "/*\\?*" } },
+                { not: { selector_matches: '[rel~="nofollow"]' } },
+                { not: { selector_matches: "[data-astro-reload]" } },
+              ],
+            },
+            eagerness: "moderate",
+          },
+        ],
+      })}
+    />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={metaKeywords.join(", ")} />
+    <meta name="theme-color" content={siteConfig.themeColor} />
+    <meta name="robots" content={robots} />
+    <meta name="googlebot" content={robots} />
+    <meta name="application-name" content={siteConfig.name} />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${siteConfig.shortName} · Blog`}
+      href={new URL("rss.xml", Astro.site)}
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:locale" content={siteConfig.locale} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta
+      property="og:image:alt"
+      content={`${siteConfig.name}: ${siteConfig.tagline}`}
+    />
+    <meta property="og:logo" content={ogLogo} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:creator" content={siteConfig.twitter} />
+
+    {
+      structuredData.map((schema) => (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(schema)}
+        />
+      ))
+    }
+
+    <Analytics />
+    <PostHog />
+  </head>
+  <body class="text-foreground min-h-svh font-sans">
+    <!-- <svg
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 -z-10 h-full w-full"
+      width="100%"
+      height="100%"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none"
+    > -->
+    <defs>
+      <pattern
+        id="page-grid"
+        width="48"
+        height="48"
+        patternUnits="userSpaceOnUse"
+      >
+        <rect width="48" height="48" fill="var(--background)"></rect>
+        <g opacity="0.15" fill="var(--foreground)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 11H11V12H12V11Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23H11V24H12V23Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M11 35H12V36H11V35Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 47H11V48H12V47Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M23 11H24V12H23V11Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M24 23H23V24H24V23Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M23 35H24V36H23V35Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M24 47H23V48H24V47Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M35 11H36V12H35V11Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M36 23H35V24H36V23Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M35 35H36V36H35V35Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M36 47H35V48H36V47Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M47 11H48V12H47V11Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M48 23H47V24H48V23Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M47 35H48V36H47V35Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M48 47H47V48H48V47Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M6 5H5V6H6V5Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M6 17H5V18H6V17Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M5 29H6V30H5V29Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M6 41H5V42H6V41Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H18V6H17V5Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M18 17H17V18H18V17Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17 29H18V30H17V29Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M18 41H17V42H18V41Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M29 5H30V6H29V5Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M30 17H29V18H30V17Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M29 29H30V30H29V29Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M30 41H29V42H30V41Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M41 5H42V6H41V5Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M42 17H41V18H42V17Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M41 29H42V30H41V29Z"
+          ></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M42 41H41V42H42V41Z"
+          ></path>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#page-grid)"></rect>
+
+    <div
+      class="mx-auto flex w-full max-w-[68rem] justify-center px-3 sm:px-4 xl:gap-6"
+    >
+      <Navigation />
+      <div class="flex min-h-svh max-w-3xl min-w-0 flex-1 flex-col">
+        <div class="grow">
+          <slot />
+        </div>
+        <Footer />
+      </div>
+    </div>
+    <GlobalIframeDialog />
+  </body>
+</html>

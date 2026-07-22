@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { getImageDimensions } from "../data/image-dimensions";
 
 interface Props {
   id: string;
@@ -20,6 +21,8 @@ const {
   triggerClass = "",
   class: className = "",
 } = Astro.props;
+
+const dims = getImageDimensions(src);
 ---
 
 <button
@@ -32,6 +35,8 @@ const {
     <img
       src={src}
       alt={alt}
+      width={dims?.width}
+      height={dims?.height}
       loading="lazy"
       decoding="async"
       class="h-auto w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"

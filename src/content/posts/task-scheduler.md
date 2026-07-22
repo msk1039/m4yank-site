@@ -2,7 +2,7 @@
 title: Building a tiny Header-only task scheduler library that runs c++ lambda functions after a delay
 description: Getting straight to the point - it takes the functions, adds them to queue and executes them after their timer expires. when a task is added using add() function, it returns a cancellation token to the caller which can be used later to cancel the task execution before it is started
 category: Journey
-coverImage: https://cdn.m4yank.com/assets/blogs/1-header.png
+coverImage: https://cdn.m4yank.com/assets/blog/sync-task-scheduler/1d.webp
 coverImageWidth: 1472
 coverImageHeight: 828
 date: "2025-04-11"
@@ -54,7 +54,7 @@ When you call `add(job, delay)`:
 
 Both the `Task` inside the queue and the `CancellationToken` in the caller's hands point at the **same** atomic flag. That shared pointer is the entire cancellation mechanism.
 
-<img src="https://cdn.m4yank.com/assets/blogs/sync-task-scheduler/1d.png" alt="add() flowchart" width="2922" height="3369" loading="lazy" decoding="async" />
+<img src="https://cdn.m4yank.com/assets/blog/sync-task-scheduler/2d.webp" alt="add() flowchart" width="1200" height="675" loading="lazy" decoding="async" />
 
 > **Flowchart 1** — a linear flow: `add(job, delay)` → fetch-add id → create shared atomic flag → compute `now() + delay` → push `Task` to min-heap → construct and return `CancellationToken`. Highlight the shared pointer arrow going to both the Task node and the CancellationToken node.
 
@@ -77,7 +77,7 @@ bool operator>(const Task& other) const {
 ```
 
 `std::greater<Task>` internally calls `a > b`, so the task with the **earliest** fire time always sits at the top. Every time a new task is pushed, the heap re-balances in `O(log n)`.
-<img src="https://cdn.m4yank.com/assets/blogs/sync-task-scheduler/2d.png" alt="add() flowchart" width="914" height="1063" loading="lazy" decoding="async" />
+<img src="https://cdn.m4yank.com/assets/blog/sync-task-scheduler/3d.webp" alt="add() flowchart" width="1200" height="1384" loading="lazy" decoding="async" />
 ---
 
 # How `scheduler::run()` works
@@ -108,7 +108,7 @@ Step by step:
 4. **Cancellation check** — before calling `execute()`, it checks `isCancelled()`. If the caller flipped the flag via their token, the task is silently skipped.
 5. **Exception safety** — `execute()` wraps the callable in a try/catch. A throwing task prints to `stderr` but does not crash the scheduler or skip the remaining queue.
 
-<img src="https://cdn.m4yank.com/assets/blogs/sync-task-scheduler/3d.png" alt="run() flowchart" width="3324" height="3466" loading="lazy" decoding="async" />
+<img src="https://cdn.m4yank.com/assets/blog/sync-task-scheduler/4d.webp" alt="run() flowchart" width="914" height="1063" loading="lazy" decoding="async" />
 
 > **Flowchart 2** — Start → queue empty? (yes → end) → `sleep_until` top task time → inner loop: queue empty or top not expired? (yes → back to outer loop) → pop task → `isCancelled()`? (yes → skip, back to inner loop) → `execute()` → catch exceptions → back to inner loop.
 

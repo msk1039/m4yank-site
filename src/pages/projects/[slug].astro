@@ -3,6 +3,7 @@ import { marked } from "marked";
 import { Icon } from "astro-icon/components";
 import Layout from "../../layouts/Layout.astro";
 import CodeCopy from "../../components/CodeCopy.astro";
+import OptimizedImage from "../../components/OptimizedImage.astro";
 import { projects, type Project } from "../../data/projects";
 import { hostname } from "../../data/portfolio";
 import { absoluteUrl, buildPersonRef } from "../../lib/seo";
@@ -165,12 +166,13 @@ const readmeHtml = await renderReadme(project);
         <article class="grid min-w-0 gap-10">
           <div class="grid gap-6 lg:grid-cols-2 lg:gap-10">
             <div class="border-border/60 overflow-hidden rounded-2xl border">
-              <img
+              <OptimizedImage
                 src={project.headerImage}
                 alt={`${project.name} preview`}
                 loading="eager"
-                decoding="async"
-                class="aspect-[4/3] h-auto w-full object-cover"
+                fetchpriority="high"
+                aspectRatio="4/3"
+                containerClass="rounded-2xl"
               />
             </div>
 

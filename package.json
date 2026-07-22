@@ -10,6 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "lighthouse": "node scripts/lighthouse.ts",
+    "optimise:images": "node scripts/optimise-images.ts",
+    "generate:image-dimensions": "node scripts/generate-image-dimensions.ts",
     "subset:fonts": "node scripts/subset-fonts.ts",
     "astro": "astro",
     "check": "astro check",

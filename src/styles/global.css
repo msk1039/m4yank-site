@@ -351,3 +351,51 @@ html.theme-transition::view-transition-new(root) {
     transition: none !important;
   }
 }
+
+/* Image placeholder skeleton and fade-in */
+.image-placeholder {
+  position: relative;
+  background-color: var(--muted);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--foreground) 4%, transparent) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: image-shimmer 1.5s infinite;
+}
+
+.image-placeholder .image-fade {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.image-placeholder .image-fade.loaded {
+  opacity: 1;
+}
+
+.image-placeholder:has(.image-fade.loaded) {
+  animation: none;
+  background-image: none;
+}
+
+@keyframes image-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-placeholder {
+    animation: none;
+  }
+
+  .image-placeholder .image-fade {
+    opacity: 1;
+    transition: none;
+  }
+}

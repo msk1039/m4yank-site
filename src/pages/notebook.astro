@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ImageViewer from "../components/ImageViewer.astro";
+import OptimizedImage from "../components/OptimizedImage.astro";
 import { notebookSections } from "../data/notebook";
 import { absoluteUrl, buildPersonRef, siteConfig } from "../lib/seo";
 
@@ -70,12 +71,12 @@ const jsonLd = {
                           class="block overflow-hidden border"
                           triggerClass="w-full"
                         >
-                          <img
+                          <OptimizedImage
                             src={image.src}
                             alt={image.alt}
                             loading="lazy"
-                            decoding="async"
-                            class="h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
+                            containerClass="w-full"
+                            class="transition-transform duration-300 group-hover:scale-[1.02]"
                           />
                         </ImageViewer>
                         {image.caption && (

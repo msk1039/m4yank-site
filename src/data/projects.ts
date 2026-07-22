@@ -20,8 +20,7 @@ export const projects: Project[] = [
     status: "In progress",
     href: "https://github.com/msk1039/termcall",
     github: "https://github.com/msk1039/termcall",
-    headerImage:
-      "https://private-user-images.githubusercontent.com/136225954/621736826-088ff2d4-c0fd-455b-89be-7407a1d8cbb8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODQ1NDkyNDUsIm5iZiI6MTc4NDU0ODk0NSwicGF0aCI6Ii8xMzYyMjU5NTQvNjIxNzM2ODI2LTA4OGZmMmQ0LWMwZmQtNDU1Yi04OWJlLTc0MDdhMWQ4Y2JiOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNzIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDcyMFQxMjAyMjVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lZTE5ZWYxNzE2Njg3NDkxNmFmMWU4NmZiYTIxYjA3NzE5YzY3YTcyZjk3Mjc2ZWNjOWJjZmZmYzcxYTE0Y2E4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.bghyDiBKYEDuzHOR_e9acSAykZMDnQtDYbb9VjzgAGU",
+    headerImage: "https://cdn.m4yank.com/assets/projects/termcall/1.webp",
     description:
       "Terminal-based P2P video calling app that renders live webcam feeds as ASCII art and streams them over WebRTC data channels.",
     metrics: [
@@ -34,7 +33,7 @@ export const projects: Project[] = [
       // "Designed a concurrent, event-driven terminal UI capable of rendering asynchronous video frames, live bandwidth analytics, and active speaker visualizers without blocking the main application thread.",
     ],
     tags: ["Go", "WebRTC", "P2P", "Terminal UI", "Networking"],
-    images: [],
+    images: ["https://cdn.m4yank.com/assets/projects/termcall/1.webp"],
   },
   {
     slug: "latexai",
@@ -68,8 +67,7 @@ export const projects: Project[] = [
     status: "Live",
     href: "https://github.com/msk1039/redis-go",
     github: "https://github.com/msk1039/redis-go",
-    headerImage:
-      "https://i.pinimg.com/1200x/d6/b1/42/d6b142d04c2ff9cc43616cedcc785a62.jpg",
+    headerImage: "https://cdn.m4yank.com/assets/projects/redis-go/1.webp",
     description:
       "Redis-inspired in-memory key-value database in Go implementing RESP parsing/serialization and core commands.",
     metrics: [
@@ -81,8 +79,6 @@ export const projects: Project[] = [
       "Ensured concurrent-safe access using Go’s sync.Mutex, with support for key expiration and TTL handling.",
     ],
     tags: ["Go", "Redis", "RESP", "Systems", "Concurrency"],
-    images: [
-      "https://i.pinimg.com/736x/c9/9e/2f/c99e2f8f98679922287e1016db704b69.jpg",
-    ],
+    images: ["https://cdn.m4yank.com/assets/projects/redis-go/1.webp"],
   },
 ];

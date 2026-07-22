@@ -29,3 +29,7 @@ pnpm-debug.log*
 
 
 posthog-setup-report.md
+
+# temporary local image output
+optimised-bucket/
+m4yank-bucket

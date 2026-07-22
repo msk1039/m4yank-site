@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import CodeCopy from "../../components/CodeCopy.astro";
+import OptimizedImage from "../../components/OptimizedImage.astro";
 import { absoluteUrl, buildPersonRef } from "../../lib/seo";
 
 export async function getStaticPaths() {
@@ -48,13 +49,12 @@ const jsonLd = {
           {
             post.data.coverImage && (
               <div class="border-border/60 bg-muted overflow-hidden rounded-2xl border ring-1 ring-white/5 ring-inset">
-                <img
+                <OptimizedImage
                   src={post.data.coverImage}
                   alt={post.data.title}
-                  width={post.data.coverImageWidth}
-                  height={post.data.coverImageHeight}
                   loading="eager"
-                  decoding="async"
+                  fetchpriority="high"
+                  containerClass="w-full"
                   class="block w-full"
                 />
               </div>

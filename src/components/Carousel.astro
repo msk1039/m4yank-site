@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { getImageDimensions } from "../data/image-dimensions";
 
 interface Slide {
   src: string;
@@ -19,17 +20,26 @@ const {
   slideHeight = "h-[440px] sm:h-[540px]",
   class: className,
 } = Astro.props;
+
+const slidesWithDims = slides.map((slide) => {
+  const dims = getImageDimensions(slide.src);
+  return {
+    ...slide,
+    width: slide.width ?? dims?.width,
+    height: slide.height ?? dims?.height,
+  };
+});
 ---
 
 {
-  slides.length > 0 && (
+  slidesWithDims.length > 0 && (
     <div class={className} data-carousel>
       <div class="relative">
         <div
           data-carousel-track
           class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth"
         >
-          {slides.map((slide, i) => (
+          {slidesWithDims.map((slide, i) => (
             <div
               class={`shrink-0 snap-start ${slideHeight}`}
               data-carousel-slide
@@ -47,7 +57,7 @@ const {
           ))}
         </div>
 
-        {slides.length > 1 && (
+        {slidesWithDims.length > 1 && (
           <button
             type="button"
             data-carousel-prev
@@ -58,7 +68,7 @@ const {
           </button>
         )}
 
-        {slides.length > 1 && (
+        {slidesWithDims.length > 1 && (
           <button
             type="button"
             data-carousel-next

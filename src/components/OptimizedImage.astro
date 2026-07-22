@@ -1,0 +1,49 @@
+---
+import { getImageDimensions } from "../data/image-dimensions";
+
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  containerClass?: string;
+  aspectRatio?: string;
+  loading?: "eager" | "lazy";
+  decoding?: "async" | "sync" | "auto";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const {
+  src,
+  alt,
+  class: className = "",
+  containerClass = "",
+  aspectRatio,
+  loading = "lazy",
+  decoding = "async",
+  fetchpriority,
+} = Astro.props;
+
+const dims = getImageDimensions(src);
+const aspectStyle = aspectRatio
+  ? `aspect-ratio: ${aspectRatio};`
+  : dims
+    ? `aspect-ratio: ${dims.width}/${dims.height};`
+    : undefined;
+---
+
+<div
+  class:list={["image-placeholder overflow-hidden", containerClass]}
+  style={aspectStyle}
+>
+  <img
+    src={src}
+    alt={alt}
+    width={dims?.width}
+    height={dims?.height}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    class:list={["image-fade h-full w-full object-cover", className]}
+    onload="this.classList.add('loaded')"
+  />
+</div>

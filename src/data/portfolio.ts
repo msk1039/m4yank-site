@@ -54,7 +54,7 @@ export const siteLinks: {
   resume: {
     href: "/resume",
     label: "View resume",
-    pdf: "https://cdn.jsdelivr.net/gh/msk1039/msk1039@main/mayank-resume.pdf",
+    pdf: "https://cdn.m4yank.com/cv.pdf",
   },
   github: { href: "https://github.com/msk1039", label: "GitHub" },
   linkedin: {

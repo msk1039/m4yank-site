@@ -16,23 +16,23 @@ export const notebookSections: NotebookSection[] = [
     description: "Generative pieces, sketches, and visual experiments.",
     images: [
       {
-        src: "https://cdn.m4yank.com/assets/1-art.jpeg",
+        src: "https://cdn.m4yank.com/assets/notebook/1-art.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/2-art.jpeg",
+        src: "https://cdn.m4yank.com/assets/notebook/2-art.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/3-art.jpeg",
+        src: "https://cdn.m4yank.com/assets/notebook/3-art.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/4-art.jpeg",
+        src: "https://cdn.m4yank.com/assets/notebook/4-art.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/5-art.jpeg",
+        src: "https://cdn.m4yank.com/assets/notebook/5-art.webp",
         alt: "img",
       },
     ],

@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import Layout from "../../layouts/Layout.astro";
+import OptimizedImage from "../../components/OptimizedImage.astro";
 import PatternBackground from "../../components/PatternBackground.astro";
 import { hostname } from "../../data/portfolio";
 import { projects } from "../../data/projects";
@@ -74,12 +75,13 @@ const jsonLd = {
                         patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
                       >
                         <div class="bg-background group-hover:outline-border mb-2 ml-2 p-2 outline outline-1 -outline-offset-1 outline-transparent transition-all duration-200 ease-in-out outline-dotted">
-                          <img
+                          <OptimizedImage
                             src={project.headerImage}
                             alt={`${project.name} preview`}
                             loading={index < 2 ? "eager" : "lazy"}
-                            decoding="async"
-                            class="aspect-[4/3] h-auto w-full object-cover"
+                            aspectRatio="4/3"
+                            containerClass="rounded-sm"
+                            class="rounded-sm"
                           />
                         </div>
                       </PatternBackground>

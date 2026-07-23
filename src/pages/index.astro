@@ -9,8 +9,13 @@ import EmailLink from "../components/EmailLink.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 import PatternBackground from "../components/PatternBackground.astro";
 import ContestStats from "../components/ContestStats.astro";
+import Carousel from "../components/Carousel.astro";
+import OnLoop from "../components/OnLoop.astro";
 import { siteLinks, hostname } from "../data/portfolio";
 import { projects } from "../data/projects";
+
+const featuredProjects = projects.filter((project) => project.featured);
+import { notebookSections } from "../data/notebook";
 
 import {
   buildPersonSchema,
@@ -29,6 +34,11 @@ const jsonLd = [
   buildPersonSchema(Astro.site),
   buildWebsiteSchema(Astro.site),
 ];
+
+const notebookImages = notebookSections.flatMap((section) => section.images);
+const shuffledNotebookImages = [...notebookImages].sort(
+  () => Math.random() - 0.5,
+);
 ---
 
 <Layout
@@ -133,7 +143,7 @@ const jsonLd = [
 
             <ul role="list" class="divide-border/40 grid gap-4 divide-y">
               {
-                projects.map((project, index) => (
+                featuredProjects.map((project) => (
                   <PatternBackground
                     name="dots"
                     size="48px"
@@ -142,16 +152,22 @@ const jsonLd = [
                   >
                     <li class="bg-background group-hover:outline-border mb-2 ml-2 outline outline-1 -outline-offset-1 outline-transparent transition-colors duration-200 ease-in-out outline-dotted first:pt-0 last:pb-0">
                       <a
-                        href={project.href}
-                        target="_blank"
+                        href={`projects/` + project.slug}
                         rel="noreferrer"
-                        class="grid gap-2 no-underline transition-transform duration-300 ease-in-out group-hover:translate-x-2 group-hover:-translate-y-3"
+                        class="grid gap-2 no-underline transition-transform duration-300 ease-in-out group-hover:translate-x-2 group-hover:-translate-y-2"
                         data-project-name={project.name}
                         data-project-href={project.href}
                       >
-                        <h2 class="text-foreground text-xl font-medium tracking-tight sm:text-2xl">
-                          {project.name}
-                        </h2>
+                        <PatternBackground
+                          name="dots"
+                          size="48px"
+                          class="group"
+                          patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100 "
+                        >
+                          <h2 class="text-foreground text-xl font-medium tracking-tight transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:-translate-y-1 sm:text-2xl">
+                            {project.name}
+                          </h2>
+                        </PatternBackground>
                         <p class="text-muted-foreground max-w-[56ch] text-sm text-pretty sm:text-base">
                           {project.description}
                         </p>
@@ -169,7 +185,7 @@ const jsonLd = [
               }
             </ul>
           </div>
-          <div class="grid">
+          <div class="grid gap-10">
             <PatternBackground name="dots" size="48px" class="">
               <div
                 class="bg-background mb-2 ml-2 flex w-full items-baseline justify-between gap-4 border border-dotted p-2"
@@ -190,6 +206,47 @@ const jsonLd = [
               </div>
             </PatternBackground>
             <ContestStats />
+          </div>
+
+          {
+            shuffledNotebookImages.length > 0 && (
+              <div class="grid gap-10">
+                <PatternBackground name="dots" size="48px" class="">
+                  <div class="bg-background mb-2 ml-2 flex w-full items-baseline justify-between gap-4 border border-dotted p-2">
+                    <p class="text-muted-foreground text-sm">Notebook</p>
+                    <a
+                      href="/notebook"
+                      class="group inline-flex items-center gap-1 text-sm font-medium no-underline"
+                    >
+                      View all
+                      <Icon
+                        name="ri:arrow-right-line"
+                        class="size-4 transition-transform group-hover:translate-x-0.5"
+                      />
+                    </a>
+                  </div>
+                </PatternBackground>
+                <Carousel
+                  slides={shuffledNotebookImages}
+                  slideHeight="h-[200px] sm:h-[280px]"
+                  continuous
+                  speed={80}
+                />
+              </div>
+            )
+          }
+
+          <OnLoop />
+          <div class="grid gap-4 text-sm">
+            <p class="text-muted-foreground">Quick navigation</p>
+            <div class="flex flex-wrap gap-x-6 gap-y-2" id="quick-nav">
+              <!-- <a href="/contact" class="font-medium" data-nav-label="work"
+                >Get in touch</a
+              > -->
+
+              <a href="/blog" data-nav-label="blog">Read my blog</a>
+              <a href="/contact" data-nav-label="contact">Get in touch</a>
+            </div>
           </div>
         </div>
       </div>
@@ -233,23 +290,23 @@ const jsonLd = [
       <!-- </PatternBackground> -->
     </section>
   </main>
-
-  <script is:inline>
-    document.querySelectorAll("[data-project-name]").forEach((link) => {
-      link.addEventListener("click", () => {
-        window.posthog?.capture("project_clicked", {
-          project_name: link.dataset.projectName,
-          project_href: link.dataset.projectHref,
-        });
-      });
-    });
-
-    document.querySelectorAll("#quick-nav [data-nav-label]").forEach((link) => {
-      link.addEventListener("click", () => {
-        window.posthog?.capture("quick_nav_link_clicked", {
-          destination: link.dataset.navLabel,
-        });
-      });
-    });
-  </script>
 </Layout>
+
+<script is:inline>
+  document.querySelectorAll("[data-project-name]").forEach((link) => {
+    link.addEventListener("click", () => {
+      window.posthog?.capture("project_clicked", {
+        project_name: link.dataset.projectName,
+        project_href: link.dataset.projectHref,
+      });
+    });
+  });
+
+  document.querySelectorAll("#quick-nav [data-nav-label]").forEach((link) => {
+    link.addEventListener("click", () => {
+      window.posthog?.capture("quick_nav_link_clicked", {
+        destination: link.dataset.navLabel,
+      });
+    });
+  });
+</script>

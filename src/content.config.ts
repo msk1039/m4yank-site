@@ -27,6 +27,7 @@ const gists = defineCollection({
     gistId: z.string(),
     gistUrl: z.string(),
     isPublic: z.boolean(),
+    headerImage: z.string().optional(),
   }),
 });
 

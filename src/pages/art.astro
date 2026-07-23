@@ -1,0 +1,236 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Carousel from "../components/Carousel.astro";
+import ImageViewer from "../components/ImageViewer.astro";
+import OptimizedImage from "../components/OptimizedImage.astro";
+import PatternBackground from "../components/PatternBackground.astro";
+import { artData } from "../data/art";
+import { absoluteUrl, buildPersonRef, siteConfig } from "../lib/seo";
+
+const pageUrl = absoluteUrl("/art", Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Art · ${siteConfig.name}`,
+  description:
+    "Oil paintings, studies, and the artists behind them - a space separate from the code.",
+  url: pageUrl,
+  author: buildPersonRef(Astro.site),
+};
+
+const carouselSlides = artData.carouselImages.map((image) => ({
+  src: image.src,
+  alt: image.alt,
+  caption: image.caption,
+}));
+---
+
+<Layout
+  title="Art"
+  description="Oil paintings, studies, and the artists behind them - a space separate from the code."
+  canonical={pageUrl}
+  jsonLd={jsonLd}
+>
+  <main class="isolate">
+    <section class="section-shell">
+      <div class="section-inner grid min-w-0 gap-16">
+        <div class="grid gap-4">
+          <p class="text-muted-foreground text-sm">Art</p>
+          <h1
+            class="max-w-[28ch] font-serif text-3xl font-normal tracking-tight text-balance italic md:text-5xl"
+          >
+            Oil paintings, studies, and studio notes.
+          </h1>
+          <p
+            class="text-muted-foreground max-w-[56ch] text-base text-pretty md:text-lg"
+          >
+            A separate corner for the non-engineering side of my brain. When I'm
+            not writing code, I'm usually here - mixing paint, pushing color
+            around, and trying to make the canvas feel like something.
+          </p>
+        </div>
+
+        {
+          carouselSlides.length > 0 && (
+            <div class="grid gap-3">
+              <p class="text-muted-foreground text-sm">Highlights</p>
+              <Carousel
+                slides={carouselSlides}
+                slideHeight="h-[160px] sm:h-[220px]"
+                continuous
+                speed={80}
+                class="border-border/60 bg-muted overflow-hidden rounded-2xl border ring-1 ring-white/5 ring-inset"
+              />
+            </div>
+          )
+        }
+
+        <div class="grid gap-4">
+          <p class="text-muted-foreground text-sm">The journey</p>
+          <p
+            class="text-muted-foreground max-w-[56ch] text-base text-pretty md:text-lg"
+          >
+            {artData.artJourneyText}
+          </p>
+        </div>
+
+        {
+          artData.artists.length > 0 && (
+            <div class="grid gap-6">
+              <div class="grid gap-6">
+                <PatternBackground name="dots" size="48px" class="">
+                  <div class="bg-background mb-2 ml-2 flex w-full items-baseline justify-between gap-4 border border-dotted p-2">
+                    <p class="text-muted-foreground text-sm">Inspiration</p>
+                  </div>
+                </PatternBackground>
+                <p class="text-muted-foreground font-serif text-lg font-extralight tracking-tight italic">
+                  Oil painters I keep coming back to.
+                </p>
+              </div>
+
+              <ul role="list" class="grid gap-4 sm:gap-6">
+                {artData.artists.map((artist, index) => {
+                  const isOdd = index % 2 !== 0;
+                  const imageCell = (
+                    <a
+                      href={artist.youtubeUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={artist.name}
+                      class="border-border/60 bg-muted block aspect-square overflow-hidden rounded-xl border no-underline ring-1 ring-white/5 ring-inset"
+                    >
+                      <OptimizedImage
+                        src={artist.image}
+                        alt={artist.name}
+                        loading={index < 2 ? "eager" : "lazy"}
+                        containerClass="h-full w-full"
+                        class="h-full w-full object-cover transition-transform duration-500 ease-out"
+                      />
+                    </a>
+                  );
+                  const textCell = (
+                    <div class="grid gap-1.5">
+                      <p class="text-muted-foreground font-mono text-xs tracking-wide uppercase">
+                        {artist.youtubeChannel}
+                      </p>
+                      <h3 class="text-base font-semibold tracking-tight transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:-translate-y-1 sm:text-lg">
+                        <a
+                          href={artist.youtubeUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {artist.name}
+                        </a>
+                      </h3>
+                      {artist.description && (
+                        <p class="text-muted-foreground line-clamp-2 max-w-[56ch] text-sm text-pretty">
+                          {artist.description}
+                        </p>
+                      )}
+                      <p class="text-muted-foreground text-sm">
+                        <a
+                          href={artist.youtubeUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          class="hover:text-foreground inline-flex items-center gap-1 transition-colors duration-200"
+                        >
+                          YouTube →
+                        </a>
+                      </p>
+                    </div>
+                  );
+
+                  return (
+                    <PatternBackground
+                      name="dots"
+                      size="48px"
+                      class="group"
+                      patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+                    >
+                      <li class="bg-background group-hover:outline-border relative mb-2 ml-2 overflow-hidden outline outline-1 -outline-offset-1 outline-transparent transition-all duration-200 ease-in-out outline-dotted">
+                        <div
+                          aria-hidden="true"
+                          class="pointer-events-none absolute inset-0 bg-cover bg-center opacity-15 transition-opacity duration-300 ease-in-out group-hover:opacity-20"
+                          style={`background-image: url(${artist.backgroundImage})`}
+                        />
+                        <article
+                          class:list={[
+                            "relative z-10 grid items-start gap-4 p-2 transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:-translate-y-1 sm:gap-6 sm:p-3",
+                            isOdd
+                              ? "grid-cols-[88px_1fr] sm:grid-cols-[120px_1fr]"
+                              : "grid-cols-[1fr_88px] sm:grid-cols-[1fr_120px]",
+                          ]}
+                        >
+                          {isOdd ? (
+                            <>
+                              {imageCell}
+                              {textCell}
+                            </>
+                          ) : (
+                            <>
+                              {textCell}
+                              {imageCell}
+                            </>
+                          )}
+                        </article>
+                      </li>
+                    </PatternBackground>
+                  );
+                })}
+              </ul>
+            </div>
+          )
+        }
+
+        {
+          artData.galleryImages.length > 0 && (
+            <div class="grid gap-6">
+              <div class="grid gap-6">
+                <PatternBackground name="dots" size="48px" class="">
+                  <div class="bg-background mb-2 ml-2 flex w-full items-baseline justify-between gap-4 border border-dotted p-2">
+                    <p class="text-muted-foreground text-sm">Gallery</p>
+                  </div>
+                </PatternBackground>
+                <p class="text-muted-foreground font-serif text-lg font-extralight tracking-tight italic">
+                  Recent work from the studio.
+                </p>
+              </div>
+
+              <ul role="list" class="grid gap-4 sm:gap-6">
+                {artData.galleryImages.map((image, index) => (
+                  <li class="break-inside-avoid">
+                    <figure class="grid gap-2">
+                      <ImageViewer
+                        id={`art-gallery-${index}`}
+                        src={image.src}
+                        alt={image.alt}
+                        title={image.alt}
+                        caption={image.caption}
+                        class="block overflow-hidden border"
+                        triggerClass="w-full"
+                      >
+                        <OptimizedImage
+                          src={image.src}
+                          alt={image.alt}
+                          loading="lazy"
+                          containerClass="w-full"
+                          class=""
+                        />
+                      </ImageViewer>
+                      {image.caption && (
+                        <figcaption class="text-muted-foreground text-xs">
+                          {image.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+    </section>
+  </main>
+</Layout>

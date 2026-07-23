@@ -5,6 +5,7 @@ export type Project = {
   href: string;
   github?: string;
   readme?: string;
+  featured?: boolean;
   headerImage: string;
   description: string;
   metrics: { label: string; value: string }[];
@@ -18,6 +19,7 @@ export const projects: Project[] = [
     slug: "termcall",
     name: "TermCall",
     status: "In progress",
+    featured: true,
     href: "https://github.com/msk1039/termcall",
     github: "https://github.com/msk1039/termcall",
     headerImage: "https://cdn.m4yank.com/assets/projects/termcall/1.webp",
@@ -39,6 +41,7 @@ export const projects: Project[] = [
     slug: "latexai",
     name: "LaTeXAI",
     status: "Live",
+    featured: true,
     href: "https://latex-editor-two.vercel.app/",
     github: "https://github.com/msk1039/latex-editor",
     headerImage:
@@ -65,6 +68,7 @@ export const projects: Project[] = [
     slug: "redis-go",
     name: "Redis-inspired KV Store",
     status: "Live",
+    featured: true,
     href: "https://github.com/msk1039/redis-go",
     github: "https://github.com/msk1039/redis-go",
     headerImage: "https://cdn.m4yank.com/assets/projects/redis-go/1.webp",
@@ -80,5 +84,26 @@ export const projects: Project[] = [
     ],
     tags: ["Go", "Redis", "RESP", "Systems", "Concurrency"],
     images: ["https://cdn.m4yank.com/assets/projects/redis-go/1.webp"],
+  },
+
+  {
+    slug: "gitmap",
+    name: "Gitmap - Minimal Project Manager",
+    status: "Live",
+    featured: true,
+    href: "https://github.com/msk1039/gitmap",
+    github: "https://github.com/msk1039/gitmap",
+    headerImage: "https://cdn.m4yank.com/assets/projects/gitmap/1.webp",
+    description:
+      "A smart tool to discover, organize, and clean your local Git projects. Easily delete unused node_modules. No more hunting through folders.",
+    metrics: [{ label: "Stack", value: "Rust · TypeScript · Tauri" }],
+    highlights: [
+      // "Built a Redis-inspired in-memory key-value database in Go implementing RESP parsing/serialization and core commands (PING, ECHO, SET, GET, TTL).",
+      "Architected a high-performance local repository manager, reducing path search times from *850ms to 2ms (a 425x improvement)* using *Trie traversal* instead of linear scanning",
+      "Implemented a Trie (Prefix Tree) in Rust to accelerate hierarchical path-based searches, reducing time complexity from *O(n*m) to O(m)* and improving memory efficiency by 40%.",
+      "Developed a thread-safe LRU cache to minimize disk I/O, achieving a 95%+ hit ratio and transforming repository access from a linear O(n) operation to a constant-time O(1) lookup.",
+    ],
+    tags: ["Trie (Prefix Tree)", "Rust", "Typescript", "Tauri"],
+    images: ["https://cdn.m4yank.com/assets/projects/gitmap/1.webp"],
   },
 ];

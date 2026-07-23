@@ -16,23 +16,23 @@ export const notebookSections: NotebookSection[] = [
     description: "Generative pieces, sketches, and visual experiments.",
     images: [
       {
-        src: "https://cdn.m4yank.com/assets/notebook/1-art.webp",
+        src: "https://cdn.m4yank.com/assets/notebook/art-1.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/notebook/2-art.webp",
+        src: "https://cdn.m4yank.com/assets/notebook/art-2.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/notebook/3-art.webp",
+        src: "https://cdn.m4yank.com/assets/notebook/art-3.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/notebook/4-art.webp",
+        src: "https://cdn.m4yank.com/assets/notebook/art-4.webp",
         alt: "img",
       },
       {
-        src: "https://cdn.m4yank.com/assets/notebook/5-art.webp",
+        src: "https://cdn.m4yank.com/assets/notebook/art-5.webp",
         alt: "img",
       },
     ],
@@ -40,16 +40,47 @@ export const notebookSections: NotebookSection[] = [
   {
     title: "Draft work",
     description: "Work-in-progress shots, early iterations, and messy ideas.",
-    images: [],
+    images: [
+      {
+        src: "https://cdn.m4yank.com/assets/notebook/df-1.webp",
+        alt: "img",
+      },
+      {
+        src: "https://cdn.m4yank.com/assets/notebook/df-2.webp",
+        alt: "img",
+      },
+    ],
   },
   {
     title: "Random work",
     description: "Bits and pieces from various projects and experiments.",
-    images: [],
+    images: [
+      {
+        src: "https://cdn.m4yank.com/assets/notebook/rw-1.webp",
+        alt: "img",
+      },
+      {
+        src: "https://cdn.m4yank.com/assets/notebook/rw-2.webp",
+        alt: "img",
+      },
+    ],
   },
   {
     title: "Screenshots",
     description: "UI captures, terminal states, and interesting moments.",
-    images: [],
+    images: [
+      {
+        src: "https://cdn.m4yank.com/assets/notebook/ss-1.webp",
+        alt: "img",
+      },
+      {
+        src: "https://cdn.m4yank.com/assets/notebook/ss-2.webp",
+        alt: "img",
+      },
+      {
+        src: "https://cdn.m4yank.com/assets/notebook/ss-3.webp",
+        alt: "img",
+      },
+    ],
   },
 ];

@@ -3,10 +3,11 @@ import { marked } from "marked";
 import { Icon } from "astro-icon/components";
 import Layout from "../../layouts/Layout.astro";
 import CodeCopy from "../../components/CodeCopy.astro";
-import OptimizedImage from "../../components/OptimizedImage.astro";
+import Carousel from "../../components/Carousel.astro";
 import { projects, type Project } from "../../data/projects";
 import { hostname } from "../../data/portfolio";
 import { absoluteUrl, buildPersonRef } from "../../lib/seo";
+import PatternBackground from "../../components/PatternBackground.astro";
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -151,6 +152,11 @@ async function parseReadme(
 }
 
 const readmeHtml = await renderReadme(project);
+
+const projectSlides = project.images.map((src, index) => ({
+  src,
+  alt: `${project.name} screenshot ${index + 1}`,
+}));
 ---
 
 <Layout
@@ -163,58 +169,43 @@ const readmeHtml = await renderReadme(project);
   <main class="isolate">
     <section class="section-shell">
       <div class="section-inner grid min-w-0 gap-12">
-        <article class="grid min-w-0 gap-10">
-          <div class="grid gap-6 lg:grid-cols-2 lg:gap-10">
-            <div class="border-border/60 overflow-hidden rounded-2xl border">
-              <OptimizedImage
-                src={project.headerImage}
-                alt={`${project.name} preview`}
-                loading="eager"
-                fetchpriority="high"
-                aspectRatio="4/3"
-                containerClass="rounded-2xl"
-              />
-            </div>
+        <article class="grid min-w-0 gap-8">
+          <Carousel
+            slides={projectSlides}
+            single
+            controlsOutside
+            slideHeight="aspect-[4/3] h-auto w-full"
+            class="border-border/60 bg-muted overflow-hidden rounded-2xl border ring-1 ring-white/5 ring-inset"
+          />
 
-            <header class="flex flex-col gap-5">
-              <div class="grid gap-2">
-                <div class="flex items-center gap-3">
-                  <span
-                    class="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-                  >
-                    {project.status}
-                  </span>
-                  <span class="text-muted-foreground">·</span>
-                  <span
-                    class="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-                  >
-                    {project.tags[0]}
-                  </span>
-                </div>
-                <h1
-                  class="font-serif text-xl font-normal tracking-tight italic md:text-5xl"
-                >
-                  {project.name}
-                </h1>
-              </div>
+          <header class="grid gap-2">
+            <p
+              class="text-muted-foreground font-mono text-sm tracking-wide uppercase"
+            >
+              {project.status} · {project.tags[0]}
+            </p>
+            <h1
+              class="max-w-[24ch] font-serif text-3xl font-semibold tracking-tight text-pretty italic md:text-5xl"
+            >
+              {project.name}
+            </h1>
+            <p class="text-muted-foreground max-w-[56ch] text-base text-pretty">
+              {project.description}
+            </p>
+            <ul role="list" class="grid gap-2 pt-2">
+              {
+                project.highlights.map((highlight) => (
+                  <li class="bg-background text-muted-foreground group-hover:outline-border mb-2 ml-2 border-l pl-2">
+                    <span>{highlight}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </header>
 
-              <p
-                class="text-muted-foreground max-w-[56ch] text-base text-pretty md:text-lg"
-              >
-                {project.description}
-              </p>
-
-              <div class="flex flex-wrap gap-2">
-                {
-                  project.tags.map((tag) => (
-                    <span class="bg-muted text-muted-foreground rounded px-2.5 py-1 font-mono text-xs tracking-wider uppercase">
-                      {tag}
-                    </span>
-                  ))
-                }
-              </div>
-
-              <div class="flex flex-wrap items-center gap-4 pt-2">
+          <div class="flex flex-wrap items-center gap-4">
+            {
+              hostname(project.href) != "github.com" && (
                 <a
                   href={project.href}
                   target="_blank"
@@ -227,35 +218,48 @@ const readmeHtml = await renderReadme(project);
                     class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   />
                 </a>
-                {
-                  project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      class="group inline-flex items-center gap-1.5 font-mono text-sm no-underline"
-                    >
-                      <Icon name="ri:github-line" class="size-4" />
-                      {hostname(project.github)}
-                      <Icon
-                        name="ri:arrow-right-up-line"
-                        class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      />
-                    </a>
-                  )
-                }
-              </div>
-            </header>
+              )
+            }
+
+            {
+              project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="group inline-flex items-center gap-1.5 font-mono text-sm no-underline"
+                >
+                  <Icon name="ri:github-line" class="size-4" />
+                  {hostname(project.github)}
+                  <Icon
+                    name="ri:arrow-right-up-line"
+                    class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+              )
+            }
           </div>
 
+          <div class="flex flex-wrap gap-2">
+            {
+              project.tags.map((tag) => (
+                <span class="bg-muted text-muted-foreground rounded px-2.5 py-1 font-mono text-xs tracking-wider uppercase">
+                  {tag}
+                </span>
+              ))
+            }
+          </div>
+          <PatternBackground name="dots" size="48px" class="">
+            <div
+              class="bg-background mb-2 ml-2 flex w-full items-baseline justify-between gap-4 border border-dotted p-2"
+            >
+              <p class="text-muted-foreground text-sm">Readme</p>
+            </div>
+          </PatternBackground>
           {
             readmeHtml && (
-              <div class="border-border/60 border-t pt-10">
-                <div
-                  class="prose max-w-none overflow-x-hidden"
-                  set:html={readmeHtml}
-                />
-                <CodeCopy />
+              <div class="prose max-w-none overflow-x-hidden">
+                <div set:html={readmeHtml} />
               </div>
             )
           }
@@ -263,4 +267,5 @@ const readmeHtml = await renderReadme(project);
       </div>
     </section>
   </main>
+  <CodeCopy />
 </Layout>

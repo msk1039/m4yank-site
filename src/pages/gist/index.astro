@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import OptimizedImage from "../../components/OptimizedImage.astro";
+import PatternBackground from "../../components/PatternBackground.astro";
 import { absoluteUrl, buildPersonRef, siteConfig } from "../../lib/seo";
 
 function gistDate(data: { datePublished?: Date; date?: Date }): Date {
@@ -46,23 +48,57 @@ const jsonLd = {
           </h1>
         </div>
 
-        <div class="divide-border/40 grid gap-0 divide-y">
+        <ul role="list" class="grid gap-12">
           {
-            gists.map((gist, index) => {
-              const tag = gist.data.tags?.split(",")[0]?.trim() ?? "Gist";
+            gists.map((post, index) => {
+              const tag = post.data.tags?.split(",")[0]?.trim() ?? "Gist";
+              const headerImage = post.data.headerImage;
               return (
-                <div class="grid gap-1 py-5 first:pt-0 last:pb-0">
-                  <h2 class="text-lg font-semibold tracking-tight">
-                    <a href={`/gist/${gist.id}`}>{gist.data.title}</a>
-                  </h2>
-                  <p class="text-muted-foreground font-mono text-sm tracking-wide uppercase">
-                    {tag} · {formatDate(gistDate(gist.data))}
-                  </p>
-                </div>
+                <PatternBackground
+                  name="dots"
+                  size="48px"
+                  class="group"
+                  patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+                >
+                  <li class="bg-background group-hover:outline-border mb-2 ml-2 outline outline-1 -outline-offset-1 outline-transparent transition-all duration-200 ease-in-out outline-dotted">
+                    <article class="grid grid-cols-[88px_1fr] items-start gap-4 p-2 transition-transform duration-300 ease-in-out group-hover:translate-x-2 group-hover:-translate-y-3 sm:grid-cols-[120px_1fr] sm:gap-6 sm:p-3">
+                      {headerImage ? (
+                        <a
+                          href={`/gist/${post.id}`}
+                          aria-label={post.data.title}
+                          class="border-border/60 bg-muted block aspect-square overflow-hidden rounded-xl border no-underline ring-1 ring-white/5 ring-inset"
+                        >
+                          <OptimizedImage
+                            src={headerImage}
+                            alt={post.data.title}
+                            loading={index < 2 ? "eager" : "lazy"}
+                            containerClass="h-full w-full"
+                            class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                          />
+                        </a>
+                      ) : (
+                        <div class="bg-muted aspect-square rounded-xl" />
+                      )}
+                      <div class="grid gap-1.5">
+                        <p class="text-muted-foreground font-mono text-xs tracking-wide uppercase">
+                          {tag} · {formatDate(gistDate(post.data))}
+                        </p>
+                        <h2 class="text-base font-semibold tracking-tight transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:-translate-y-1 sm:text-lg">
+                          <a href={`/gist/${post.id}`}>{post.data.title}</a>
+                        </h2>
+                        {post.data.description && (
+                          <p class="text-muted-foreground line-clamp-2 max-w-[56ch] text-sm text-pretty">
+                            {post.data.description}
+                          </p>
+                        )}
+                      </div>
+                    </article>
+                  </li>
+                </PatternBackground>
               );
             })
           }
-        </div>
+        </ul>
       </div>
     </section>
   </main>
@@ -71,9 +107,13 @@ const jsonLd = {
 <script is:inline>
   document.querySelectorAll('a[href^="/gist/"]').forEach((link) => {
     link.addEventListener("click", () => {
+      const title = link
+        .closest("li")
+        ?.querySelector("h2")
+        ?.textContent?.trim();
       window.posthog?.capture("gist_clicked", {
         gist_slug: link.getAttribute("href").replace("/gist/", ""),
-        gist_title: link.textContent?.trim() ?? null,
+        gist_title: title ?? null,
       });
     });
   });

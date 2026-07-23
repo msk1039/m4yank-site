@@ -1,0 +1,77 @@
+---
+import OptimizedImage from "./OptimizedImage.astro";
+import PatternBackground from "./PatternBackground.astro";
+import { onLoop } from "../data/portfolio";
+
+const smallShapes = [
+  "col-span-2 row-span-1",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-2",
+  "col-span-2 row-span-1",
+  "col-span-2 row-span-1",
+  "col-span-3 row-span-1",
+];
+
+const shapes = [
+  "md:col-span-2 md:row-span-1",
+  "md:col-span-1 md:row-span-1",
+  "md:col-span-1 md:row-span-2",
+  "md:col-span-1 md:row-span-1",
+  "md:col-span-2 md:row-span-1",
+  "md:col-span-1 md:row-span-1",
+];
+
+const rows = onLoop.map((show, index) => ({
+  ...show,
+  smallShape: smallShapes[index % smallShapes.length],
+  shape: shapes[index % shapes.length],
+}));
+---
+
+{
+  rows.length > 0 && (
+    <div class="grid gap-6">
+      <div class="grid gap-6">
+        <PatternBackground name="dots" size="48px" class="">
+          <div class="bg-background mb-2 ml-2 flex w-full items-baseline justify-between gap-4 border border-dotted p-2">
+            <p class="text-muted-foreground text-sm">On Loop</p>
+          </div>
+        </PatternBackground>
+        <p class="text-muted-foreground font-serif text-lg font-extralight tracking-tight italic">
+          What I keep coming back to.
+        </p>
+      </div>
+
+      <div class="grid auto-rows-[140px] grid-cols-3 gap-1 sm:auto-rows-[160px] md:auto-rows-[160px] md:grid-cols-4">
+        {rows.map((show) => (
+          <PatternBackground
+            name="dots"
+            size="48px"
+            class={`group ${show.smallShape} ${show.shape}`}
+            patternClass="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+          >
+            <div class="bg-background group-hover:outline-border mb-2 ml-2 h-full p-1.5 outline outline-1 -outline-offset-1 outline-transparent transition-all duration-200 ease-in-out outline-dotted">
+              <div class="relative h-full w-full overflow-hidden rounded-lg transition-transform duration-200 ease-in-out group-hover:translate-x-1 group-hover:-translate-y-1">
+                <OptimizedImage
+                  src={show.image}
+                  alt={show.title}
+                  loading="lazy"
+                  containerClass="h-full w-full"
+                  class="h-full w-full object-cover"
+                />
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
+                  <p class="text-foreground text-sm font-medium">
+                    {show.title}
+                  </p>
+                  <p class="text-foreground/80 text-xs leading-tight">
+                    {show.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </PatternBackground>
+        ))}
+      </div>
+    </div>
+  )
+}

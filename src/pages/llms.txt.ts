@@ -24,6 +24,7 @@ export const GET: APIRoute = async ({ site }) => {
     "",
     `- [Work](${absoluteUrl("/work", site)}): Product and engineering work across startup environments.`,
     `- [Projects](${absoluteUrl("/projects", site)}): Selected projects with build notes and READMEs.`,
+    `- [Art](${absoluteUrl("/art", site)}): Artwork, inspiration, and the journey behind it.`,
     `- [Notebook](${absoluteUrl("/notebook", site)}): Notes, learnings, and references I keep coming back to.`,
     `- [Blog](${absoluteUrl("/blog", site)}): Engineering notes, journeys, and deep dives.`,
     `- [Gists](${absoluteUrl("/gist", site)}): Short code snippets and quick solutions.`,

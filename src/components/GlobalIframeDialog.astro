@@ -79,7 +79,7 @@ import { Icon } from "astro-icon/components";
     document.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
-      if (link.hasAttribute("data-no-dialog")) return;
+      if (!link.hasAttribute("data-dialog")) return;
       if (link.hasAttribute("download")) return;
 
       let url;

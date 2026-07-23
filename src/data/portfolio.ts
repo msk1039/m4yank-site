@@ -43,6 +43,12 @@ export type NavItem = {
   label: string;
 };
 
+export type AnimeShow = {
+  title: string;
+  description: string;
+  image: string;
+};
+
 export const siteLinks: {
   primaryCta: SiteLink;
   resume: Required<SiteLink>;
@@ -112,6 +118,7 @@ export const navItems: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/projects", label: "Projects" },
+  { href: "/art", label: "Art" },
   { href: "/notebook", label: "Notebook" },
   { href: "/blog", label: "Blog" },
   { href: "/gist", label: "Gist" },
@@ -121,6 +128,38 @@ export const navItems: NavItem[] = [
 // Derived from the central identity config so the contact email stays in
 // sync with structured data. Prefer importing `siteConfig.email` directly.
 export const contactEmail = "hello@m4yank.com";
+
+export const onLoop: AnimeShow[] = [
+  {
+    title: "Frieren",
+    description: `The Journey After the "Happily Ever After"`,
+    image: "https://cdn.m4yank.com/assets/anime/1.webp",
+  },
+  {
+    title: "Vinland Saga",
+    description: "Vikings, revenge, and the meaning of peace.",
+    image: "https://cdn.m4yank.com/assets/anime/2.webp",
+  },
+  {
+    title: "Violet Evergarden",
+    description:
+      "a former child soldier seeking to understand the meaning behind the final words her beloved Major spoke to her",
+    image: "https://cdn.m4yank.com/assets/anime/3.webp",
+  },
+  {
+    title: "86",
+    description:
+      "In a war-torn future, a group of soldiers fights for their freedom and dignity.",
+    // image: "public/anime/86.jpg",
+    image: "https://cdn.m4yank.com/assets/anime/4.webp",
+  },
+  {
+    title: "Your Lie in April",
+    description:
+      "A Beautifully Tragic Romance Where Music Heals a Broken Heart",
+    image: "https://cdn.m4yank.com/assets/anime/5.webp",
+  },
+];
 
 export function hostname(url: string): string {
   try {

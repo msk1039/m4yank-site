@@ -7,6 +7,66 @@ export type ImageDimensions = {
 };
 
 export const imageDimensions: Record<string, ImageDimensions> = {
+  "https://cdn.m4yank.com/assets/anime/1.webp": {
+    width: 2048,
+    height: 1152,
+  },
+  "https://cdn.m4yank.com/assets/anime/2.webp": {
+    width: 1200,
+    height: 675,
+  },
+  "https://cdn.m4yank.com/assets/anime/3.webp": {
+    width: 736,
+    height: 1309,
+  },
+  "https://cdn.m4yank.com/assets/anime/4.webp": {
+    width: 1200,
+    height: 516,
+  },
+  "https://cdn.m4yank.com/assets/anime/4b.webp": {
+    width: 736,
+    height: 414,
+  },
+  "https://cdn.m4yank.com/assets/anime/5.webp": {
+    width: 1179,
+    height: 703,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/1.webp": {
+    width: 448,
+    height: 600,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/1b.webp": {
+    width: 864,
+    height: 549,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/2.webp": {
+    width: 900,
+    height: 900,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/2b.webp": {
+    width: 1000,
+    height: 657,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/2bb.webp": {
+    width: 533,
+    height: 298,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/3.webp": {
+    width: 447,
+    height: 447,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/3b.webp": {
+    width: 1280,
+    height: 720,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/4.webp": {
+    width: 900,
+    height: 900,
+  },
+  "https://cdn.m4yank.com/assets/art/artists/4b.webp": {
+    width: 1200,
+    height: 600,
+  },
   "https://cdn.m4yank.com/assets/blog/sync-task-scheduler/1d.webp": {
     width: 1200,
     height: 675,
@@ -23,23 +83,63 @@ export const imageDimensions: Record<string, ImageDimensions> = {
     width: 1200,
     height: 1251,
   },
-  "https://cdn.m4yank.com/assets/notebook/1-art.webp": {
+  "https://cdn.m4yank.com/assets/gist/stl-notes/1.webp": {
+    width: 2824,
+    height: 1444,
+  },
+  "https://cdn.m4yank.com/assets/gist/webgl-raycasting-shadow/1.webp": {
+    width: 1280,
+    height: 1008,
+  },
+  "https://cdn.m4yank.com/assets/notebook/art-1.webp": {
     width: 1200,
     height: 900,
   },
-  "https://cdn.m4yank.com/assets/notebook/2-art.webp": {
+  "https://cdn.m4yank.com/assets/notebook/art-2.webp": {
     width: 1200,
     height: 1600,
   },
-  "https://cdn.m4yank.com/assets/notebook/3-art.webp": {
+  "https://cdn.m4yank.com/assets/notebook/art-3.webp": {
     width: 1200,
     height: 900,
   },
-  "https://cdn.m4yank.com/assets/notebook/4-art.webp": {
+  "https://cdn.m4yank.com/assets/notebook/art-4.webp": {
     width: 960,
     height: 1280,
   },
-  "https://cdn.m4yank.com/assets/notebook/5-art.webp": {
+  "https://cdn.m4yank.com/assets/notebook/art-5.webp": {
+    width: 1200,
+    height: 900,
+  },
+  "https://cdn.m4yank.com/assets/notebook/df-1.webp": {
+    width: 1200,
+    height: 748,
+  },
+  "https://cdn.m4yank.com/assets/notebook/df-2.webp": {
+    width: 1200,
+    height: 1570,
+  },
+  "https://cdn.m4yank.com/assets/notebook/rw-1.webp": {
+    width: 1200,
+    height: 802,
+  },
+  "https://cdn.m4yank.com/assets/notebook/rw-2.webp": {
+    width: 1200,
+    height: 707,
+  },
+  "https://cdn.m4yank.com/assets/notebook/ss-1.webp": {
+    width: 1200,
+    height: 649,
+  },
+  "https://cdn.m4yank.com/assets/notebook/ss-2.webp": {
+    width: 1200,
+    height: 731,
+  },
+  "https://cdn.m4yank.com/assets/notebook/ss-3.webp": {
+    width: 1200,
+    height: 748,
+  },
+  "https://cdn.m4yank.com/assets/projects/gitmap/1.webp": {
     width: 1200,
     height: 900,
   },
